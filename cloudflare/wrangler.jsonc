@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "nbt-schedule-public",
+  "name": "nbt-schedule",
   "main": "src/index.ts",
   "compatibility_date": "2026-04-09",
   "compatibility_flags": ["nodejs_compat"],
@@ -20,5 +20,22 @@
       "binding": "HYPERDRIVE",
       "id": "REPLACE_WITH_HYPERDRIVE_ID"
     }
-  ]
+  ],
+  "env": {
+    "dev": {
+      "name": "nbt-schedule-dev",
+      "vars": {
+        "CORS_ALLOW_ORIGIN": "*",
+        "NBT_SCHEMA": "nbt",
+        "SEASON_ASSET_PATH": "/data/season.json",
+        "SITE_ORIGIN": "https://nbt-dev.zachbrickson.dev"
+      },
+      "hyperdrive": [
+        {
+          "binding": "HYPERDRIVE",
+          "id": "REPLACE_WITH_HYPERDRIVE_ID"
+        }
+      ]
+    }
+  }
 }

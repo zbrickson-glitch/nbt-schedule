@@ -6,6 +6,8 @@
     "cloudflare:dev": "npm --prefix cloudflare run dev",
     "cloudflare:typecheck": "npm --prefix cloudflare run typecheck",
     "cloudflare:deploy": "npm --prefix cloudflare run deploy",
-    "cloudflare:deploy:dry": "cd cloudflare && node node_modules/wrangler/bin/wrangler.js deploy --dry-run"
+    "cloudflare:deploy:dev": "npm --prefix cloudflare run deploy:dev",
+    "cloudflare:deploy:dry": "cd cloudflare && node node_modules/wrangler/bin/wrangler.js deploy --dry-run",
+    "deploy": "bash deploy.sh"
   }
 }
