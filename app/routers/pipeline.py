@@ -1,7 +1,14 @@
 """
 Unified NBT email pipeline endpoint.
-Called by n8n dispatcher for all emails from bwahlquist@nevadaballet.org.
+Called by n8n dispatcher (or the built-in poller) for all emails from
+bwahlquist@nevadaballet.org.
 Owns: classification, parsing, atomic DB write, Discord notification.
+
+Two-layer architecture:
+  1. Deterministic parser (app/parsers/) — fast, free, handles 90% of cases
+  2. Qwen smart classifier (app/services/qwen.py) — adds call-status reasoning
+     using the full casting database role list. Handles TYPE 1 vs TYPE 2
+     disambiguation, ambiguous cast columns, and edge cases.
 """
 import base64
 import json
@@ -18,6 +25,13 @@ from app.db import get_db
 from app.parsers.classifier import classify_pdf, classify_email, PdfType, EmailType
 from app.parsers.schedule import parse_schedule_pdf
 from app.services.discord import post_to_discord
+from app.services.qwen import interpret_schedule_smart, interpret_casting_smart
+from app.services.knowledge import (
+    get_all_production_roles,
+    get_user_roles,
+    get_casting_status_rules,
+    update_casting_db,
+)
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/pipeline", tags=["pipeline"])
@@ -221,9 +235,16 @@ def pipeline_nbt(payload: EmailPayload):
 # ---------------------------------------------------------------------------
 
 def _handle_schedule(payload: EmailPayload, webhook: str) -> dict:
-    """Parse schedule PDF(s), store atomically, notify Discord."""
+    """Parse schedule PDF(s), store atomically, notify Discord.
+
+    Two-layer approach:
+      1. Deterministic parser extracts raw events (time, studio, show, cast_type).
+      2. If Qwen is enabled, run the smart classifier to add call-status reasoning
+         using the full casting database role list (TYPE 1 vs TYPE 2 logic).
+    """
     all_events = []
     errors = []
+    qwen_events = []  # events from Qwen's smart interpretation
 
     for att in payload.attachments:
         # Route casting PDFs in a mixed email to the casting handler
@@ -234,56 +255,103 @@ def _handle_schedule(payload: EmailPayload, webhook: str) -> dict:
         if pdf_type == PdfType.MAAG:
             continue  # ignore month-at-a-glance
 
+        pdf_bytes = base64.b64decode(att.data)
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as f:
+            f.write(pdf_bytes)
+            tmp_path = f.name
+
         try:
-            pdf_bytes = base64.b64decode(att.data)
-            with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as f:
-                f.write(pdf_bytes)
-                tmp_path = f.name
+            # --- Layer 1: Deterministic parser ---
             try:
                 parsed_days = parse_schedule_pdf(tmp_path)
-            finally:
-                os.unlink(tmp_path)
+            except Exception as exc:
+                logger.exception("Deterministic parse failed for %s", att.filename)
+                errors.append(f"{att.filename}: {exc}")
+                parsed_days = None
 
-            # parse_schedule_pdf returns a single ParsedSchedule, not a list
-            parsed_days = [parsed_days] if parsed_days else []
-            for day in parsed_days:
-                for ev in day.events:
-                    all_events.append({
-                        "date": str(day.date),
-                        "time_start": ev.time_start,
-                        "time_end": ev.time_end,
-                        "studio": ev.studio,
-                        "show": ev.show,
-                        "staff": ev.staff,
-                        "cast_type": ev.cast_type,
-                        "notes": ev.notes,
-                        "event_type": "rehearsal",
-                        "fitting_dancer": None,
-                        "is_revised": False,
-                    })
-                for fv in day.fittings:
-                    all_events.append({
-                        "date": str(day.date),
-                        "time_start": fv.time_start,
-                        "time_end": fv.time_end,
-                        "studio": fv.where,
-                        "show": fv.show,
-                        "staff": fv.staff,
-                        "cast_type": None,
-                        "notes": fv.notes,
-                        "event_type": "fitting",
-                        "fitting_dancer": fv.dancer,
-                        "is_revised": False,
-                    })
-        except Exception as exc:
-            logger.exception("Failed to parse attachment %s", att.filename)
-            errors.append(f"{att.filename}: {exc}")
+            if parsed_days:
+                parsed_days = [parsed_days] if parsed_days else []
+                for day in parsed_days:
+                    for ev in day.events:
+                        all_events.append({
+                            "date": str(day.date),
+                            "time_start": ev.time_start,
+                            "time_end": ev.time_end,
+                            "studio": ev.studio,
+                            "show": ev.show,
+                            "staff": ev.staff,
+                            "cast_type": ev.cast_type,
+                            "notes": ev.notes,
+                            "event_type": "rehearsal",
+                            "fitting_dancer": None,
+                            "is_revised": False,
+                        })
+                    for fv in day.fittings:
+                        all_events.append({
+                            "date": str(day.date),
+                            "time_start": fv.time_start,
+                            "time_end": fv.time_end,
+                            "studio": fv.where,
+                            "show": fv.show,
+                            "staff": fv.staff,
+                            "cast_type": None,
+                            "notes": fv.notes,
+                            "event_type": "fitting",
+                            "fitting_dancer": fv.dancer,
+                            "is_revised": False,
+                        })
+
+            # --- Layer 2: Qwen smart classifier ---
+            if settings.qwen_enabled and settings.qwen_api_key:
+                try:
+                    import pdfplumber
+                    pdf_text_parts = []
+                    pdf_tables = []
+                    with pdfplumber.open(tmp_path) as pdf:
+                        for i, page in enumerate(pdf.pages):
+                            text = page.extract_text()
+                            if text:
+                                pdf_text_parts.append(f"--- Page {i+1} ---\n{text}")
+                            tables = page.extract_tables()
+                            for table in tables:
+                                pdf_tables.append({"page": i + 1, "rows": table})
+
+                    pdf_text = "\n\n".join(pdf_text_parts)
+                    user_roles = get_user_roles()
+                    production_roles = get_all_production_roles()
+
+                    qwen_result = interpret_schedule_smart(
+                        pdf_text=pdf_text,
+                        pdf_tables=pdf_tables,
+                        email_subject=payload.subject,
+                        user_roles=user_roles,
+                        production_roles=production_roles,
+                    )
+
+                    if qwen_result["error"]:
+                        logger.warning("Qwen schedule interpretation failed: %s", qwen_result["error"])
+                    else:
+                        qwen_events = qwen_result["events"]
+                        logger.info(
+                            "Qwen interpreted %d events (tokens: %s)",
+                            len(qwen_events),
+                            qwen_result.get("usage", {}).get("total_tokens", "?"),
+                        )
+                except Exception:
+                    logger.exception("Qwen smart classifier failed, continuing with deterministic only")
+
+        finally:
+            os.unlink(tmp_path)
 
     if not all_events:
         msg = _discord_schedule_error(payload, errors or ["no events extracted"])
         post_to_discord(webhook, msg)
         status = "parse_error" if errors else "no_events"
         return {"status": status, "message_id": payload.message_id, "errors": errors}
+
+    # --- Merge Qwen call-status into deterministic events ---
+    if qwen_events:
+        all_events = _merge_qwen_call_status(all_events, qwen_events)
 
     # Atomic store
     count = _store_events_atomically(all_events, payload.message_id)
@@ -293,6 +361,10 @@ def _handle_schedule(payload: EmailPayload, webhook: str) -> dict:
     date_range = f"{dates[0]} \u2013 {dates[-1]}" if dates else "unknown"
 
     msg = _discord_schedule_ok(payload, count, date_range, zach_calls)
+    if qwen_events:
+        called = sum(1 for e in qwen_events if e.get("call_status") == "CALLED")
+        not_called = sum(1 for e in qwen_events if e.get("call_status") == "NOT_CALLED")
+        msg += f"\n\U0001f9e0 Qwen: {called} CALLED, {not_called} NOT_CALLED"
     if errors:
         msg += f"\n\u26a0\ufe0f Partial errors: {'; '.join(errors)}"
     post_to_discord(webhook, msg)
@@ -302,7 +374,50 @@ def _handle_schedule(payload: EmailPayload, webhook: str) -> dict:
         "message_id": payload.message_id,
         "events_stored": count,
         "date_range": date_range,
+        "qwen_enriched": bool(qwen_events),
     }
+
+
+def _merge_qwen_call_status(det_events: list, qwen_events: list) -> list:
+    """Merge Qwen's call-status reasoning into the deterministic event list.
+
+    Matches events by show name + start time. Adds 'call_status' and
+    'qwen_reasoning' fields to each deterministic event. Falls back to
+    the deterministic event unchanged if no Qwen match is found.
+    """
+    # Build a lookup from Qwen events: (show_fragment, start_time) -> qwen_event
+    qwen_lookup = {}
+    for qe in qwen_events:
+        title = qe.get("title", "")
+        # Extract show name from "NBT: [CALLED] Piece Name" format
+        show_part = title.split("]", 1)[-1].strip() if "]" in title else title
+        start = qe.get("start_datetime", "")
+        # Use HH:MM from the ISO datetime
+        time_key = start[11:16] if len(start) >= 16 else ""
+        key = (show_part.lower(), time_key)
+        qwen_lookup[key] = qe
+
+    for ev in det_events:
+        show_lower = (ev.get("show") or "").lower()
+        t_start = ev.get("time_start")
+        if hasattr(t_start, "strftime"):
+            time_key = t_start.strftime("%H:%M")
+        else:
+            time_key = str(t_start)[:5] if t_start else ""
+
+        # Try exact match first, then fuzzy (show substring)
+        matched = qwen_lookup.get((show_lower, time_key))
+        if not matched:
+            for (qs, qt), qe in qwen_lookup.items():
+                if qt == time_key and (qs in show_lower or show_lower in qs):
+                    matched = qe
+                    break
+
+        if matched:
+            ev["call_status"] = matched.get("call_status")
+            ev["qwen_reasoning"] = matched.get("reasoning")
+
+    return det_events
 
 
 # ---------------------------------------------------------------------------
@@ -310,16 +425,98 @@ def _handle_schedule(payload: EmailPayload, webhook: str) -> dict:
 # ---------------------------------------------------------------------------
 
 def _handle_casting(payload: EmailPayload, webhook: str) -> dict:
-    """Casting PDFs: notify Discord for manual processing. No DB writes."""
-    filenames = ", ".join(a.filename for a in payload.attachments)
-    post_to_discord(webhook,
-        f"\U0001f4cb **Casting PDF received \u2014 needs manual processing**\n"
-        f"   From: {payload.sender}\n"
-        f"   Subject: {payload.subject}\n"
-        f"   Files: {filenames}\n"
-        f"   \u2192 Open a Claude session and parse into casting DB"
-    )
-    return {"status": "manual", "message_id": payload.message_id}
+    """Process casting PDFs.
+
+    If Qwen is enabled, use AI to interpret the casting and update the
+    knowledge base automatically. Otherwise fall back to Discord notification
+    for manual processing.
+    """
+    if not (settings.qwen_enabled and settings.qwen_api_key):
+        # Fallback: manual processing via Discord
+        filenames = ", ".join(a.filename for a in payload.attachments)
+        post_to_discord(webhook,
+            f"\U0001f4cb **Casting PDF received \u2014 needs manual processing**\n"
+            f"   From: {payload.sender}\n"
+            f"   Subject: {payload.subject}\n"
+            f"   Files: {filenames}\n"
+            f"   \u2192 Open a Claude session and parse into casting DB"
+        )
+        return {"status": "manual", "message_id": payload.message_id}
+
+    # --- Qwen-powered casting interpretation ---
+    results = []
+    for att in payload.attachments:
+        pdf_type = classify_pdf(att.filename)
+        if pdf_type not in (PdfType.CASTING, PdfType.UNKNOWN):
+            continue
+
+        try:
+            pdf_bytes = base64.b64decode(att.data)
+            with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as f:
+                f.write(pdf_bytes)
+                tmp_path = f.name
+
+            try:
+                import pdfplumber
+                pdf_text_parts = []
+                pdf_tables = []
+                with pdfplumber.open(tmp_path) as pdf:
+                    for i, page in enumerate(pdf.pages):
+                        text = page.extract_text()
+                        if text:
+                            pdf_text_parts.append(f"--- Page {i+1} ---\n{text}")
+                        tables = page.extract_tables()
+                        for table in tables:
+                            pdf_tables.append({"page": i + 1, "rows": table})
+
+                pdf_text = "\n\n".join(pdf_text_parts)
+                casting_rules = get_casting_status_rules()
+
+                casting_result = interpret_casting_smart(
+                    pdf_text=pdf_text,
+                    pdf_tables=pdf_tables,
+                    email_subject=payload.subject,
+                    email_body=payload.attachments[0].data[:500] if payload.attachments else "",
+                    existing_production=None,
+                    casting_status_rules=casting_rules,
+                )
+
+                if casting_result.get("error"):
+                    logger.warning("Qwen casting interpretation failed: %s", casting_result["error"])
+                    post_to_discord(webhook,
+                        f"\u26a0\ufe0f **Qwen casting parse failed** for {att.filename}\n"
+                        f"   Error: {casting_result['error'][:200]}"
+                    )
+                else:
+                    prod_key = casting_result.get("production_key", "unknown")
+                    roles_data = casting_result.get("roles", {})
+                    zach_roles = casting_result.get("zach_roles", [])
+                    status = casting_result.get("casting_status", "unknown")
+
+                    if roles_data:
+                        update_casting_db(prod_key, roles_data, source_email_id=payload.message_id)
+                        logger.info("Updated casting DB: %s (%s)", prod_key, status)
+
+                    post_to_discord(webhook,
+                        f"\U0001f4cb **Casting processed by Qwen**\n"
+                        f"   Production: {casting_result.get('production_title', prod_key)}\n"
+                        f"   Status: {status}\n"
+                        f"   Zach's roles: {', '.join(zach_roles) if zach_roles else 'none listed'}\n"
+                        f"   File: {att.filename}"
+                    )
+                    results.append(prod_key)
+
+            finally:
+                os.unlink(tmp_path)
+
+        except Exception:
+            logger.exception("Failed to process casting attachment %s", att.filename)
+
+    return {
+        "status": "ok" if results else "no_casting",
+        "message_id": payload.message_id,
+        "productions_updated": results,
+    }
 
 
 def _handle_casting_attachment(att: AttachmentPayload, payload: EmailPayload,
