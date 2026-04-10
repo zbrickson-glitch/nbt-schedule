@@ -1,0 +1,148 @@
+{
+  "meta": {
+    "description": "Persistent knowledge log for the NBT ballet automation system. The hourly agent reads this file every run and appends what it learns. Never delete entries \u2014 mark them superseded instead.",
+    "last_updated": "2026-04-09",
+    "version": 2
+  },
+  "casting_status_rules": {
+    "description": "How to tell provisional from final casting",
+    "signals_provisional": [
+      "Email body says 'This is not a Performance Casting list'",
+      "Subject or filename contains 'Role Responsibilities'",
+      "Subject or filename contains 'Learning List'",
+      "PDF header says 'Subject to change' with no performance dates listed",
+      "Casting sheet has no specific performance date or show number attached",
+      "More than ~8 dancers listed per role (suggests learning pool, not final cast)"
+    ],
+    "signals_final": [
+      "Subject or filename contains 'Performance Casting'",
+      "Subject or filename contains 'Cast List'",
+      "PDF lists specific show dates or show numbers (e.g. 'Show 1', 'Friday May 2')",
+      "Casting columns labeled Cast A / Cast B / Cast C with specific dates",
+      "Brooke's email body says 'attached is the casting' or 'final casting'"
+    ],
+    "when_final_arrives": "Compare against the existing provisional entry for the same production. Identify any roles Zach gained or lost. Send a notification with the diff. Update the production entry with status=final and record the change history."
+  },
+  "productions": {
+    "hansel_and_gretel_2026": {
+      "full_title": "Hansel and Gretel",
+      "season": "2025-26",
+      "casting_status": "provisional",
+      "casting_note": "Brooke's email explicitly said 'This is not a Performance Casting list' \u2014 this is a learning/responsibility list. Final performance casting has not yet been sent.",
+      "zach_provisional_roles": [
+        "The Transformed Witch",
+        "The Sandman",
+        "Street Scene",
+        "Boogiemen",
+        "Fairy Cavaliers",
+        "Gingerbread Men"
+      ],
+      "zach_final_roles": null,
+      "expected_performance_dates": null
+    },
+    "nutcracker_2025_dec": {
+      "full_title": "The Nutcracker (December 2025)",
+      "season": "2025-26",
+      "casting_status": "final",
+      "casting_note": "Multi-cast table with Cast A/B/C columns. This was final performance casting.",
+      "zach_final_roles": [
+        "Male Parent 2 (Cast A, B, C)",
+        "Mouse 4 (Cast A, B, C)",
+        "Mother Ginger (Cast A, B, C)",
+        "Mouse King (Cover)"
+      ]
+    },
+    "company_b_2026_feb": {
+      "full_title": "Company B (February 2026)",
+      "season": "2025-26",
+      "casting_status": "provisional",
+      "casting_note": "Roster-only format \u2014 just listed company dancers including Zach. No role assignments."
+    },
+    "company_b_2026_mar": {
+      "full_title": "Company B (March 2026)",
+      "season": "2025-26",
+      "casting_status": "provisional",
+      "casting_note": "Text role\u2192cast format."
+    },
+    "zigzag_2026": {
+      "full_title": "ZigZag (2026)",
+      "season": "2025-26",
+      "casting_status": "provisional",
+      "casting_note": "Section-by-section pairs format. Zach covers Robert Fulton in 4 sections.",
+      "zach_provisional_roles": [
+        "Cover for Robert Fulton (4 sections)"
+      ]
+    }
+  },
+  "schedule_patterns": {
+    "description": "Observed patterns about how Brooke sends schedules. Updated by the agent as it learns.",
+    "observations": [
+      "Schedules usually arrive the evening before (e.g. Thursday night for Friday's schedule)",
+      "Subject format is typically '{Weekday} {M/D} Artist Daily Schedule'",
+      "Revised schedules have 'Revised' prepended to the subject \u2014 they supersede the earlier version for that date",
+      "Wardrobe Fittings section is often present but empty \u2014 treat as informational, skip if no cast listed",
+      "BREAK rows appear in the table but are not real events",
+      "Company Class (9:30am most days) uses 'Kaiser/Clark' as staff",
+      "H&G rehearsals primarily use 'Schultz/Baker' as staff",
+      "Performance day schedules come from TSC (The Smith Center) and have a different venue"
+    ]
+  },
+  "call_logic_notes": {
+    "description": "Hard-won logic for determining if Zach is called to a rehearsal. Update this if Zach reports a mistake.",
+    "rules": [
+      "CRITICAL: \"All Dancers as called\" has TWO meanings depending on the What column:",
+      "  TYPE 1 - SPECIFIC ROLE REHEARSAL: What column lists specific role names (e.g. Mother, Father). Only dancers cast in those exact roles come. If Zach is NOT in those roles \u2192 NOT_CALLED.",
+      "  TYPE 2 - FULL RUN-THROUGH: What column references a full act/scene run (e.g. Act 1 & 2 Cast C). Everyone in the production comes. Dancers in the named cast perform, everyone else watches/covers. If Zach is in the production \u2192 CALLED.",
+      "ALL MEN / ALL MALE ARTISTS: Zach is male \u2192 CALLED",
+      "ALL WOMEN / ALL FEMALE ARTISTS: NOT_CALLED (Zach is male)",
+      "ALL DANCERS (not \"as called\"): CALLED \u2014 everyone comes",
+      "APPRENTICES mentioned: CALLED (Zach is an Apprentice)",
+      "NBT II only (no Apprentice mention): NOT_CALLED \u2014 Zach is not NBT II",
+      "COMPANY DANCERS alone (no Apprentice): MAYBE \u2014 Zach is Apprentice rank, not Company",
+      "COMPANY CLASS with empty Cast: MAYBE unless Apprentices explicitly mentioned",
+      "ENSEMBLE CAST AND COVERS / FULL CAST AND COVERS: CALLED (Zach is a cover)",
+      "Zach name explicitly in Cast column: CALLED",
+      "Specific dancer names listed, Zach not among them: NOT_CALLED",
+      "No cast info at all: MAYBE"
+    ],
+    "known_edge_cases": [
+      "Fairy Cavaliers \u2260 Fairy King \u2014 these are different roles, do not conflate them",
+      "The Transformed Witch \u2260 Ice Cream Witch \u2014 these are different roles in H&G",
+      "When Cast A/B/C is specified in a run-through, Zach attends if he is in ANY cast or is a cover",
+      "When \"selected NBT II\" is mentioned for Company Class, Zach as Apprentice is ambiguous \u2192 MAYBE",
+      "Wardrobe Fittings section is often empty \u2014 skip if no cast is listed"
+    ]
+  },
+  "change_history": {
+    "description": "Log of casting changes detected over time. Append new entries when the agent detects a role gained, lost, or updated.",
+    "entries": [
+      {
+        "date": "2026-04-09",
+        "production": "hansel_and_gretel_2026",
+        "type": "initial_seed",
+        "note": "H&G Role Responsibilities (provisional) processed from email 19d7367ad56c0aad. Zach assigned: The Transformed Witch, The Sandman, Street Scene, Boogiemen, Fairy Cavaliers, Gingerbread Men."
+      }
+    ]
+  },
+  "agent_notes": {
+    "description": "Free-form notes the agent appends when it observes something worth remembering. Timestamped. Keep concise.",
+    "entries": [
+      {
+        "date": "2026-04-09",
+        "note": "System initialized. Casting DB seeded with all historical NBT 2025-26 season data. Monday 4/13 and Tuesday 4/14 Artist Daily Schedules processed into Google Calendar."
+      },
+      {
+        "date": "2026-04-10 01:13",
+        "note": "Processed 1 email(s). Created 0 events. Casting updates: []. Tokens used: 0"
+      },
+      {
+        "date": "2026-04-09 18:17",
+        "note": "MAJOR LOGIC UPDATE: Zach confirmed \"All Dancers as called\" means only the roles in the What column for specific role rehearsals, NOT everyone in the production. For full run-throughs (Act 1 & 2, etc.), everyone comes. Updated Qwen prompt and tested against 4 different schedule types \u2014 all correct."
+      },
+      {
+        "date": "2026-04-09 19:35",
+        "note": "REHEARSAL REQUEST LOGIC: When the What column says 'Rehearsal request' with 'All Dancers as called', this is CALLED. Everyone must show up because dancers submit requests to run specific pieces, and if someone requests something you're in, you have to run it. Dancers usually get sent home early but must be present at start."
+      }
+    ]
+  }
+}

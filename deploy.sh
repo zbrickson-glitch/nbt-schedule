@@ -1,55 +1,64 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# deploy.sh — Deploy nbt-schedule to Cloudflare Workers
+# Usage: bash deploy.sh [dev|prod|status]
+#   dev    — Deploy to nbt-dev.zachbrickson.dev (iteration/preview)
+#   prod   — Deploy to schedule.naenaewhipwhip.com (live site)
+#   status — Show recent deployments
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-WORKSPACE_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-deploy_legacy() {
-  echo "Running DB schema migration..."
-  kubectl exec -n zachdb deploy/zachdb-postgres -- psql -U zachdb -d zachdb \
-    -c "$(cat "$SCRIPT_DIR/sql/001_schema.sql")"
+CF_PROJECT_DEV="nbt-schedule-dev"
+CF_PROJECT_PROD="nbt-schedule"
 
-  echo "Applying k3s manifests..."
-  kubectl apply -f "$WORKSPACE_ROOT/infra/manifests/nbt/deployment.yaml"
-
-  echo "Waiting for rollout..."
-  kubectl -n nbt rollout status deploy/nbt-schedule-service --timeout=120s
-
-  echo "Health check..."
-  curl -sf http://schedule.k3s.local/api/health || echo "Warning: health check failed - check ingress"
-
-  echo "Legacy deploy complete!"
+get_cf_creds() {
+  export CLOUDFLARE_API_KEY
+  export CLOUDFLARE_EMAIL="zbrickson@gmail.com"
+  CLOUDFLARE_API_KEY="$(op read 'op://Madge/Cloudflare Global API Key/credential')"
 }
 
-deploy_cloudflare_dry() {
-  echo "Running Cloudflare dry run..."
-  cd "$SCRIPT_DIR/cloudflare"
-  node node_modules/wrangler/bin/wrangler.js deploy --dry-run
-}
+case "${1:-dev}" in
+  dev)
+    get_cf_creds
+    echo "=== Deploying to DEV (nbt-dev.zachbrickson.dev) ==="
+    cd "$SCRIPT_DIR/cloudflare"
+    node node_modules/wrangler/bin/wrangler.js deploy --env dev
 
-deploy_cloudflare() {
-  echo "Deploying Cloudflare public site..."
-  cd "$SCRIPT_DIR/cloudflare"
-  node node_modules/wrangler/bin/wrangler.js deploy
-}
+    echo ""
+    echo "=== DEPLOYED TO DEV ==="
+    echo "  Preview: https://nbt-dev.zachbrickson.dev"
+    ;;
 
-case "${1:-cloudflare-dry}" in
-  legacy)
-    deploy_legacy
+  prod)
+    get_cf_creds
+    echo "=== Deploying to PROD (schedule.naenaewhipwhip.com) ==="
+    cd "$SCRIPT_DIR/cloudflare"
+    node node_modules/wrangler/bin/wrangler.js deploy
+
+    echo ""
+    echo "=== DEPLOYED TO PROD ==="
+    echo "  Live: https://schedule.naenaewhipwhip.com"
     ;;
-  cloudflare-dry)
-    deploy_cloudflare_dry
+
+  status)
+    get_cf_creds
+    echo "=== Cloudflare Workers Projects ==="
+    echo ""
+    echo "--- DEV (nbt-dev.zachbrickson.dev) ---"
+    cd "$SCRIPT_DIR/cloudflare"
+    node node_modules/wrangler/bin/wrangler.js deployments list --env dev 2>&1 | head -10
+    echo ""
+    echo "--- PROD (schedule.naenaewhipwhip.com) ---"
+    node node_modules/wrangler/bin/wrangler.js deployments list 2>&1 | head -10
     ;;
-  cloudflare)
-    deploy_cloudflare
-    ;;
+
   *)
-    echo "Usage: $0 [cloudflare-dry|cloudflare|legacy]"
+    echo "Usage: $0 [dev|prod|status]"
     echo ""
     echo "Commands:"
-    echo "  cloudflare-dry  Validate the Worker/assets bundle without deploying"
-    echo "  cloudflare      Deploy the public Cloudflare Worker + assets"
-    echo "  legacy          Run the existing k3s deployment flow"
+    echo "  dev      Deploy to nbt-dev.zachbrickson.dev (default, no tests)"
+    echo "  prod     Deploy to schedule.naenaewhipwhip.com (live site)"
+    echo "  status   Show recent deployments for both projects"
     exit 1
     ;;
 esac

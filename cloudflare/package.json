@@ -1,11 +1,12 @@
 {
-  "name": "nbt-schedule-cloudflare",
+  "name": "nbt-schedule",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
+    "deploy:dev": "wrangler deploy --env dev",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

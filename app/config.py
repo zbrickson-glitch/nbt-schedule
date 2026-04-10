@@ -13,6 +13,12 @@ class Settings(BaseSettings):
     base_url: str = "http://schedule.k3s.local"
     nbt_schema: str = "nbt"
 
+    # Qwen smart classifier (Alibaba Cloud Coding Plan)
+    qwen_api_key: str = ""
+    qwen_api_base: str = "https://coding-intl.dashscope.aliyuncs.com/v1"
+    qwen_model: str = "qwen3.5-plus"
+    qwen_enabled: bool = True  # set False to skip AI layer entirely
+
     class Config:
         env_prefix = "NBT_"
 

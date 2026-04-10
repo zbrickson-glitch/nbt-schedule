@@ -1,0 +1,2903 @@
+{
+  "productions": {
+    "nutcracker_2025_dec": {
+      "updated": "2025-12-14",
+      "source_email_id": "historical_seed",
+      "roles": {
+        "Dr. Stahlbaum": {
+          "dancers": [
+            "Robert Fulton",
+            "Lucas Castro",
+            "Sergio Alvarez",
+            "Cameron Kesten"
+          ]
+        },
+        "Frau Stahlbaum": {
+          "dancers": [
+            "Brooke Lyness",
+            "Jessica Ousterhout",
+            "Christina Ghiardi"
+          ]
+        },
+        "Marie": {
+          "dancers": [
+            "Layla Naldoza",
+            "Aria Corpuz"
+          ]
+        },
+        "Fritz": {
+          "dancers": [
+            "Alivia Becker",
+            "Nora Frerich"
+          ]
+        },
+        "Maid 1": {
+          "dancers": [
+            "Carmen Rossi",
+            "Zuzu Donovan"
+          ]
+        },
+        "Maid 2": {
+          "dancers": [
+            "Mallory Sweeney",
+            "Kayla Boudreau"
+          ]
+        },
+        "Female Parent 1": {
+          "dancers": [
+            "Mackenna Pieper",
+            "Rebecca Haftl",
+            "Carmen Rossi"
+          ]
+        },
+        "Female Parent 2": {
+          "dancers": [
+            "Selena Knowlton",
+            "Camille Kellems",
+            "Mallory Sweeney"
+          ]
+        },
+        "Female Parent 3": {
+          "dancers": [
+            "Julia Pasquale",
+            "Jaime DeRocker",
+            "Chloe McAllister"
+          ]
+        },
+        "Female Parent 4": {
+          "dancers": [
+            "Madeline Diehl",
+            "Mirella Costa Neto",
+            "Boroka Cserey"
+          ]
+        },
+        "Male Parent 1": {
+          "dancers": [
+            "Cameron Kesten",
+            "Lucas Castro"
+          ]
+        },
+        "Male Parent 2": {
+          "dancers": [
+            "Zachary Brickson",
+            "Issac Aguirre"
+          ]
+        },
+        "Male Parent 3": {
+          "dancers": [
+            "Jack Grohmann",
+            "Bailey Roberts",
+            "Nathan Huffman"
+          ]
+        },
+        "Male Parent 4": {
+          "dancers": [
+            "Ben Strassman",
+            "Leo McGrath",
+            "Matthew Jacome"
+          ]
+        },
+        "Grandmother": {
+          "dancers": [
+            "Paityn Lauzon",
+            "Sarah Knutson",
+            "Brooke Lyness"
+          ]
+        },
+        "Grandfather": {
+          "dancers": [
+            "Wyatt Dodd",
+            "Bailey Roberts"
+          ]
+        },
+        "Herr Drosselmeier": {
+          "dancers": [
+            "Leo Ameika",
+            "Sergio Alvarez",
+            "Cameron Kesten"
+          ]
+        },
+        "His Nephew": {
+          "dancers": [
+            "Uriel Gonzalez",
+            "Charlie Stover"
+          ]
+        },
+        "Harlequin": {
+          "dancers": [
+            "Camille Kellems",
+            "Daisy Feinstein"
+          ]
+        },
+        "Columbine": {
+          "dancers": [
+            "Shelby Rambo",
+            "Sarah Knutson"
+          ]
+        },
+        "Soldier": {
+          "dancers": [
+            "Leo McGrath",
+            "Jack Grohmann",
+            "Totocani Garcia",
+            "Bailey Roberts"
+          ]
+        },
+        "Mouse King": {
+          "dancers": [
+            "Cameron Kesten",
+            "Leo Ameika",
+            "Zachary Brickson",
+            "Wyatt Dodd"
+          ]
+        },
+        "Mouse 1": {
+          "dancers": [
+            "Wyatt Dodd",
+            "Boroka Cserey"
+          ]
+        },
+        "Mouse 2": {
+          "dancers": [
+            "Ben Strassman",
+            "Mila Buvosky"
+          ]
+        },
+        "Mouse 3": {
+          "dancers": [
+            "Bailey Roberts",
+            "Totocani Garcia"
+          ]
+        },
+        "Mouse 4": {
+          "dancers": [
+            "Zachary Brickson",
+            "Cameron Kesten",
+            "Mia Patton"
+          ]
+        },
+        "Mouse 5": {
+          "dancers": [
+            "Leo McGrath",
+            "Jack Grohmann",
+            "Dariah Strickland"
+          ]
+        },
+        "Mouse 6": {
+          "dancers": [
+            "Issac Aguirre",
+            "Zuzu Donovan"
+          ]
+        },
+        "Mouse 7": {
+          "dancers": [
+            "Matthew Jacome",
+            "Chloe LaRouche"
+          ]
+        },
+        "Mouse 8": {
+          "dancers": [
+            "Lucas Castro",
+            "Nathan Huffman",
+            "Kayla Boudreau"
+          ]
+        },
+        "Snowflake 1": {
+          "dancers": [
+            "Jaime DeRocker",
+            "Kayla Boudreau"
+          ]
+        },
+        "Snowflake 2": {
+          "dancers": [
+            "Madeline Diehl",
+            "Alexis Minnich"
+          ]
+        },
+        "Snowflake 3": {
+          "dancers": [
+            "Rebecca Haftl",
+            "Christina Ghiardi",
+            "Kayla Boudreau"
+          ]
+        },
+        "Snowflake 4": {
+          "dancers": [
+            "Camille Kellems",
+            "Boroka Cserey"
+          ]
+        },
+        "Snowflake 5": {
+          "dancers": [
+            "Selena Knowlton",
+            "Kayla Boudreau"
+          ]
+        },
+        "Snowflake 6": {
+          "dancers": [
+            "Sarah Knutson",
+            "Anna Sidorovich"
+          ]
+        },
+        "Snowflake 7": {
+          "dancers": [
+            "Paityn Lauzon",
+            "Eden Tenebaum"
+          ]
+        },
+        "Snowflake 8": {
+          "dancers": [
+            "Brooke Lyness",
+            "Ava James Kelsey"
+          ]
+        },
+        "Snowflake 9": {
+          "dancers": [
+            "Jessica Ousterhout",
+            "Mia Patton"
+          ]
+        },
+        "Snowflake 10": {
+          "dancers": [
+            "Julia Pasquale",
+            "Mirella Costa Neto",
+            "Chloe LaRouche"
+          ]
+        },
+        "Snowflake 11": {
+          "dancers": [
+            "Mackenna Pieper",
+            "Chloe McAllister"
+          ]
+        },
+        "Snowflake 12": {
+          "dancers": [
+            "Shelby Rambo",
+            "Julia Cornette"
+          ]
+        },
+        "Snowflake 13": {
+          "dancers": [
+            "Carmen Rossi",
+            "Dariah Strickland"
+          ]
+        },
+        "Snowflake 14": {
+          "dancers": [
+            "Mallory Sweeney",
+            "Chloe McAllister"
+          ]
+        },
+        "Snowflake 15": {
+          "dancers": [
+            "Daisy Feinstein",
+            "Sophie Anna Batista"
+          ]
+        },
+        "Snowflake 16 (12.14 ver)": {
+          "dancers": [
+            "Ellen Smith",
+            "Vera Nguyen",
+            "Madison Kemp"
+          ]
+        },
+        "The Sugarplum Fairy": {
+          "dancers": [
+            "Mirella Costa Neto",
+            "Jaime DeRocker",
+            "Julia Pasquale",
+            "Jessica Ousterhout"
+          ]
+        },
+        "Hot Chocolate Principal (F)": {
+          "dancers": [
+            "Paityn Lauzon",
+            "Brooke Lyness",
+            "Mirella Costa Neto"
+          ]
+        },
+        "Hot Chocolate Principal (M)": {
+          "dancers": [
+            "Robert Fulton",
+            "Lucas Castro",
+            "Sergio Alvarez",
+            "Leo Ameika"
+          ]
+        },
+        "Coffee 1": {
+          "dancers": [
+            "Mackenna Pieper",
+            "Christina Ghiardi",
+            "Jessica Ousterhout/Rebecca Haftl"
+          ]
+        },
+        "Tea Principal": {
+          "dancers": [
+            "Leo McGrath",
+            "Jack Grohmann",
+            "Bailey Roberts",
+            "Totocani Garcia",
+            "Ben Strassman"
+          ]
+        },
+        "Candy Canes Principal": {
+          "dancers": [
+            "Jack Grohmann",
+            "Leo McGrath",
+            "Robert Fulton",
+            "Bailey Roberts"
+          ]
+        },
+        "Marzipan Principal": {
+          "dancers": [
+            "Julia Pasquale",
+            "Camille Kellems",
+            "Jaime DeRocker",
+            "Shelby Rambo"
+          ]
+        },
+        "Mother Ginger": {
+          "dancers": [
+            "Zachary Brickson",
+            "Wyatt Dodd"
+          ]
+        },
+        "Waltz of the Flowers - Dew Drop": {
+          "dancers": [
+            "Christina Ghiardi",
+            "Julia Pasquale",
+            "Rebecca Haftl/Mackenna Pieper",
+            "Jessica Ousterhout"
+          ]
+        },
+        "Waltz of the Flowers - Demi 1": {
+          "dancers": [
+            "Jaime DeRocker",
+            "Rebecca Haftl",
+            "Camille Kellems",
+            "Paityn Lauzon"
+          ]
+        },
+        "Waltz of the Flowers - Demi 2": {
+          "dancers": [
+            "Brooke Lyness",
+            "Jessica Ousterhout",
+            "Selena Knowlton",
+            "Mirella Costa Neto"
+          ]
+        },
+        "Her Cavalier": {
+          "dancers": [
+            "Sergio Alvarez",
+            "Robert Fulton",
+            "Lucas Castro",
+            "Cameron Kesten"
+          ]
+        },
+        "Bed Op": {
+          "dancers": [
+            "Totocani Garcia",
+            "Zuzu Donovan",
+            "Natasha Norris"
+          ]
+        }
+      },
+      "casting_status": "final",
+      "casting_note": "Multi-cast table with Cast A/B/C \u2014 final performance casting",
+      "change_history": []
+    },
+    "nutcracker_2025_nov": {
+      "updated": "2025-11-21",
+      "source_email_id": "historical_seed",
+      "roles": {
+        "Dr. Stahlbaum": {
+          "dancers": [
+            "Robert Fulton",
+            "Lucas Castro",
+            "Sergio Alvarez",
+            "Cameron Kesten"
+          ]
+        },
+        "Frau Stahlbaum": {
+          "dancers": [
+            "Brooke Lyness",
+            "Jessica Ousterhout",
+            "Christina Ghiardi"
+          ]
+        },
+        "Marie": {
+          "dancers": [
+            "Layla Naldoza",
+            "Aria Corpuz"
+          ]
+        },
+        "Fritz": {
+          "dancers": [
+            "Alivia Becker",
+            "Nora Frerich"
+          ]
+        },
+        "Maid 1": {
+          "dancers": [
+            "Carmen Rossi",
+            "Zuzu Donovan"
+          ]
+        },
+        "Maid 2": {
+          "dancers": [
+            "Mallory Sweeney",
+            "Kayla Boudreau"
+          ]
+        },
+        "Female Parent 1": {
+          "dancers": [
+            "Mackenna Pieper",
+            "Rebecca Haftl",
+            "Carmen Rossi"
+          ]
+        },
+        "Female Parent 2": {
+          "dancers": [
+            "Selena Knowlton",
+            "Camille Kellems",
+            "Mallory Sweeney"
+          ]
+        },
+        "Female Parent 3": {
+          "dancers": [
+            "Julia Pasquale",
+            "Jaime DeRocker",
+            "Chloe McAllister"
+          ]
+        },
+        "Female Parent 4": {
+          "dancers": [
+            "Madeline Diehl",
+            "Mirella Costa Neto",
+            "Boroka Cserey"
+          ]
+        },
+        "Male Parent 1": {
+          "dancers": [
+            "Cameron Kesten",
+            "Lucas Castro"
+          ]
+        },
+        "Male Parent 2": {
+          "dancers": [
+            "Zachary Brickson",
+            "Issac Aguirre"
+          ]
+        },
+        "Male Parent 3": {
+          "dancers": [
+            "Jack Grohmann",
+            "Bailey Roberts",
+            "Nathan Huffman"
+          ]
+        },
+        "Male Parent 4": {
+          "dancers": [
+            "Ben Strassman",
+            "Leo McGrath",
+            "Matthew Jacome"
+          ]
+        },
+        "Grandmother": {
+          "dancers": [
+            "Paityn Lauzon",
+            "Sarah Knutson",
+            "Brooke Lyness"
+          ]
+        },
+        "Grandfather": {
+          "dancers": [
+            "Wyatt Dodd",
+            "Bailey Roberts"
+          ]
+        },
+        "Herr Drosselmeier": {
+          "dancers": [
+            "Leo Ameika",
+            "Sergio Alvarez",
+            "Cameron Kesten"
+          ]
+        },
+        "His Nephew": {
+          "dancers": [
+            "Uriel Gonzalez",
+            "Charlie Stover"
+          ]
+        },
+        "Harlequin": {
+          "dancers": [
+            "Camille Kellems",
+            "Daisy Feinstein"
+          ]
+        },
+        "Columbine": {
+          "dancers": [
+            "Shelby Rambo",
+            "Sarah Knutson"
+          ]
+        },
+        "Soldier": {
+          "dancers": [
+            "Leo McGrath",
+            "Jack Grohmann",
+            "Totocani Garcia",
+            "Bailey Roberts"
+          ]
+        },
+        "Mouse King": {
+          "dancers": [
+            "Cameron Kesten",
+            "Leo Ameika",
+            "Zachary Brickson",
+            "Wyatt Dodd"
+          ]
+        },
+        "Mouse 1": {
+          "dancers": [
+            "Wyatt Dodd",
+            "Boroka Cserey"
+          ]
+        },
+        "Mouse 2": {
+          "dancers": [
+            "Ben Strassman",
+            "Mila Buvosky"
+          ]
+        },
+        "Mouse 3": {
+          "dancers": [
+            "Bailey Roberts",
+            "Totocani Garcia"
+          ]
+        },
+        "Mouse 4": {
+          "dancers": [
+            "Zachary Brickson",
+            "Cameron Kesten",
+            "Mia Patton"
+          ]
+        },
+        "Mouse 5": {
+          "dancers": [
+            "Leo McGrath",
+            "Jack Grohmann",
+            "Dariah Strickland"
+          ]
+        },
+        "Mouse 6": {
+          "dancers": [
+            "Issac Aguirre",
+            "Zuzu Donovan"
+          ]
+        },
+        "Mouse 7": {
+          "dancers": [
+            "Matthew Jacome",
+            "Chloe LaRouche"
+          ]
+        },
+        "Mouse 8": {
+          "dancers": [
+            "Lucas Castro",
+            "Nathan Huffman",
+            "Kayla Boudreau"
+          ]
+        },
+        "Snowflake 1": {
+          "dancers": [
+            "Jaime DeRocker",
+            "Kayla Boudreau"
+          ]
+        },
+        "Snowflake 2": {
+          "dancers": [
+            "Madeline Diehl",
+            "Alexis Minnich"
+          ]
+        },
+        "Snowflake 3": {
+          "dancers": [
+            "Rebecca Haftl",
+            "Christina Ghiardi",
+            "Kayla Boudreau"
+          ]
+        },
+        "Snowflake 4": {
+          "dancers": [
+            "Camille Kellems",
+            "Boroka Cserey"
+          ]
+        },
+        "Snowflake 5": {
+          "dancers": [
+            "Selena Knowlton",
+            "Kayla Boudreau"
+          ]
+        },
+        "Snowflake 6": {
+          "dancers": [
+            "Sarah Knutson",
+            "Anna Sidorovich"
+          ]
+        },
+        "Snowflake 7": {
+          "dancers": [
+            "Paityn Lauzon",
+            "Eden Tenebaum"
+          ]
+        },
+        "Snowflake 8": {
+          "dancers": [
+            "Brooke Lyness",
+            "Ava James Kelsey"
+          ]
+        },
+        "Snowflake 9": {
+          "dancers": [
+            "Jessica Ousterhout",
+            "Mia Patton"
+          ]
+        },
+        "Snowflake 10": {
+          "dancers": [
+            "Julia Pasquale",
+            "Mirella Costa Neto",
+            "Chloe LaRouche"
+          ]
+        },
+        "Snowflake 11": {
+          "dancers": [
+            "Mackenna Pieper",
+            "Chloe McAllister"
+          ]
+        },
+        "Snowflake 12": {
+          "dancers": [
+            "Shelby Rambo",
+            "Julia Cornette"
+          ]
+        },
+        "Snowflake 13": {
+          "dancers": [
+            "Carmen Rossi",
+            "Dariah Strickland"
+          ]
+        },
+        "Snowflake 14": {
+          "dancers": [
+            "Mallory Sweeney",
+            "Chloe McAllister"
+          ]
+        },
+        "Snowflake 15": {
+          "dancers": [
+            "Daisy Feinstein",
+            "Sophie Anna Batista"
+          ]
+        },
+        "Snowflake 16 (12.14 ver)": {
+          "dancers": [
+            "Ellen Smith",
+            "Vera Nguyen",
+            "Madison Kemp"
+          ]
+        },
+        "The Sugarplum Fairy": {
+          "dancers": [
+            "Mirella Costa Neto",
+            "Jaime DeRocker",
+            "Julia Pasquale",
+            "Jessica Ousterhout"
+          ]
+        },
+        "Hot Chocolate Principal (F)": {
+          "dancers": [
+            "Paityn Lauzon",
+            "Brooke Lyness",
+            "Mirella Costa Neto"
+          ]
+        },
+        "Hot Chocolate Principal (M)": {
+          "dancers": [
+            "Robert Fulton",
+            "Lucas Castro",
+            "Sergio Alvarez",
+            "Leo Ameika"
+          ]
+        },
+        "Coffee 1": {
+          "dancers": [
+            "Mackenna Pieper",
+            "Christina Ghiardi",
+            "Jessica Ousterhout/Rebecca Haftl"
+          ]
+        },
+        "Tea Principal": {
+          "dancers": [
+            "Leo McGrath",
+            "Jack Grohmann",
+            "Bailey Roberts",
+            "Totocani Garcia",
+            "Ben Strassman"
+          ]
+        },
+        "Candy Canes Principal": {
+          "dancers": [
+            "Jack Grohmann",
+            "Leo McGrath",
+            "Robert Fulton",
+            "Bailey Roberts"
+          ]
+        },
+        "Marzipan Principal": {
+          "dancers": [
+            "Julia Pasquale",
+            "Camille Kellems",
+            "Jaime DeRocker",
+            "Shelby Rambo"
+          ]
+        },
+        "Mother Ginger": {
+          "dancers": [
+            "Zachary Brickson",
+            "Wyatt Dodd"
+          ]
+        },
+        "Waltz of the Flowers - Dew Drop": {
+          "dancers": [
+            "Christina Ghiardi",
+            "Julia Pasquale",
+            "Rebecca Haftl/Mackenna Pieper",
+            "Jessica Ousterhout"
+          ]
+        },
+        "Waltz of the Flowers - Demi 1": {
+          "dancers": [
+            "Jaime DeRocker",
+            "Rebecca Haftl",
+            "Camille Kellems",
+            "Paityn Lauzon"
+          ]
+        },
+        "Waltz of the Flowers - Demi 2": {
+          "dancers": [
+            "Brooke Lyness",
+            "Jessica Ousterhout",
+            "Selena Knowlton",
+            "Mirella Costa Neto"
+          ]
+        },
+        "Her Cavalier": {
+          "dancers": [
+            "Sergio Alvarez",
+            "Robert Fulton",
+            "Lucas Castro",
+            "Cameron Kesten"
+          ]
+        },
+        "Bed Op": {
+          "dancers": [
+            "Totocani Garcia",
+            "Zuzu Donovan",
+            "Natasha Norris"
+          ]
+        }
+      },
+      "casting_status": "final",
+      "casting_note": "November Nutcracker \u2014 final performance casting",
+      "change_history": []
+    },
+    "company_b_2026_feb": {
+      "updated": "2026-02-12",
+      "source_email_id": "historical_seed",
+      "roles": {
+        "Company B Members (Female)": {
+          "dancers": [
+            "Mirella Costa Neto",
+            "Jaime DeRocker",
+            "Madeline Diehl",
+            "Camille Kellems",
+            "Selena Knowlton",
+            "Sarah Knutson",
+            "Paityn Lauzon",
+            "Brooke Lyness",
+            "Julia Pasquale",
+            "Mackenna Pieper",
+            "Shelby Rambo",
+            "Carmen Rossi",
+            "Mallory Sweeney"
+          ]
+        },
+        "Company B Members (Male)": {
+          "dancers": [
+            "Sergio Alvarez",
+            "Zachary Brickson",
+            "Lucas Castro",
+            "Wyatt Dodd",
+            "Robert Fulton",
+            "Cameron Kesten",
+            "Leo McGrath",
+            "Bailey Roberts",
+            "Ben Strassman"
+          ]
+        }
+      },
+      "casting_status": "provisional",
+      "casting_note": "Roster-only format \u2014 no role assignments, learning list",
+      "change_history": []
+    },
+    "company_b_2026_mar": {
+      "updated": "2026-03-04",
+      "source_email_id": "historical_seed",
+      "roles": {
+        "Bei Mir Bist du Schon (opening)": {
+          "dancers": [
+            "Full Cast"
+          ]
+        },
+        "Pennsylvania Polka": {
+          "dancers": [
+            "Shelby Rambo",
+            "Robert Fulton",
+            "Sarah Knutson",
+            "Ben Strassman"
+          ]
+        },
+        "Tico-Tico": {
+          "dancers": [
+            "Matthew Jacome",
+            "Lucas Castro"
+          ]
+        },
+        "Oh Johnny, Oh Johnny, Oh!": {
+          "dancers": [
+            "Leo McGrath",
+            "Matthew Jacome"
+          ]
+        },
+        "I Can Dream, Can't I?": {
+          "dancers": [
+            "Jaime DeRocker",
+            "Brooke Lyness",
+            "Carmen Rossi"
+          ]
+        },
+        "Joseph!": {
+          "dancers": [
+            "Selena Knowlton",
+            "Cameron Kesten",
+            "Madeline Diehl",
+            "Robert Fulton",
+            "Brooke Lyness",
+            "Leo McGrath",
+            "Carmen Rossi",
+            "Wyatt Dodd",
+            "Sarah Knutson",
+            "Ben Strassman",
+            "Mallory Sweeney",
+            "Matthew Jacome"
+          ]
+        },
+        "Bugle Boy": {
+          "dancers": [
+            "Bailey Roberts",
+            "Robert Fulton"
+          ]
+        },
+        "Rum And Cola": {
+          "dancers": [
+            "Paityn Lauzon",
+            "Selena Knowlton",
+            "Mallory Sweeney"
+          ]
+        },
+        "Another You": {
+          "dancers": [
+            "Camille Kellems",
+            "Lucas Castro",
+            "Julia Pasquale",
+            "Cameron Kesten"
+          ]
+        },
+        "Bei Mir Bist du Schon (Closing)": {
+          "dancers": [
+            "Full Cast"
+          ]
+        }
+      },
+      "casting_status": "provisional",
+      "casting_note": "Text role\u2192cast format",
+      "change_history": []
+    },
+    "red_angels_2026": {
+      "updated": "2026-03-04",
+      "source_email_id": "historical_seed",
+      "roles": {
+        "Albert": {
+          "dancers": [
+            "Lucas Castro"
+          ]
+        },
+        "Darci": {
+          "dancers": [
+            "Christina Ghiardi",
+            "Mackenna Pieper"
+          ]
+        },
+        "Peter": {
+          "dancers": [
+            "Robert Fulton",
+            "Bailey Roberts"
+          ]
+        },
+        "Wendy": {
+          "dancers": [
+            "Jessica Ousterhout",
+            "Julia Pasquale"
+          ]
+        },
+        "Mirella Costa Neto (role unspecified)": {
+          "dancers": [
+            "Mirella Costa Neto"
+          ]
+        },
+        "Madeline Diehl (role unspecified)": {
+          "dancers": [
+            "Madeline Diehl"
+          ]
+        }
+      },
+      "casting_status": "provisional",
+      "casting_note": "Text with character names in parentheses",
+      "change_history": []
+    },
+    "zigzag_2026_overview": {
+      "updated": "2026-03-04",
+      "source_email_id": "historical_seed",
+      "roles": {
+        "Cory Stearns / Aran Bell": {
+          "dancers": [
+            "Robert Fulton",
+            "Zachary Brickson"
+          ]
+        },
+        "James Whiteside / Blaine Hoven": {
+          "dancers": [
+            "Leo McGrath",
+            "Bailey Roberts"
+          ]
+        },
+        "Joo Wan Ahn / Calvin Royal": {
+          "dancers": [
+            "Lucas Castro",
+            "Bailey Roberts"
+          ]
+        },
+        "Devon Teuscher / Isabella Boyleston": {
+          "dancers": [
+            "Julia Pasquale",
+            "Christina Ghiardi"
+          ]
+        },
+        "Cassandra Trenary / Catherine Hurlin": {
+          "dancers": [
+            "Brooke Lyness",
+            "Sarah Knutson"
+          ]
+        },
+        "Lucianna Paris / Katie Williams": {
+          "dancers": [
+            "Mirella Costa Neto",
+            "Mallory Sweeney"
+          ]
+        },
+        "Carlos Gonzalez / Tyler Maloney": {
+          "dancers": [
+            "Bailey Roberts",
+            "Ben Strassman"
+          ]
+        },
+        "Joseph Markey / Abby Morrison": {
+          "dancers": [
+            "Rebecca Haftl",
+            "Carmen Rossi"
+          ]
+        },
+        "Eric Tamm / Sung Woo Han": {
+          "dancers": [
+            "Cameron Kesten",
+            "Ben Strassman"
+          ]
+        },
+        "Melvin Lawovi / Javier Rivet": {
+          "dancers": [
+            "Wyatt Dodd",
+            "Matthew Jacome"
+          ]
+        },
+        "Erica Lall / Zimmi Coker": {
+          "dancers": [
+            "Shelby Rambo",
+            "Madeline Diehl"
+          ]
+        },
+        "Sierra Armstrong / Courtney Lavine": {
+          "dancers": [
+            "Jessica Ousterhout",
+            "Camille Kellems"
+          ]
+        },
+        "Isadora Loyola / Lauren Bonfiglio": {
+          "dancers": [
+            "Mackenna Pieper",
+            "Paityn Lauzon"
+          ]
+        },
+        "Betsey McBride / Breanne Granlund": {
+          "dancers": [
+            "Sarah Knutson",
+            "Selena Knowlton"
+          ]
+        }
+      },
+      "casting_status": "provisional",
+      "casting_note": "ABT original-cast reference format \u2014 covers only",
+      "change_history": []
+    },
+    "zigzag_sections_2026": {
+      "updated": "2026-03-05",
+      "source_email_id": "historical_seed",
+      "roles": {
+        "What The World Needs Now Is Love": {
+          "dancers": [
+            "Robert Fulton",
+            "Leo McGrath",
+            "Lucas Castro",
+            "Julia Pasquale",
+            "Brooke Lyness",
+            "Mirella Costa Neto",
+            "Bailey Roberts",
+            "Rebecca Haftl",
+            "Cameron Kesten",
+            "Wyatt Dodd",
+            "Shelby Rambo",
+            "Jessica Ousterhout",
+            "Mackenna Pieper",
+            "Sarah Knutson",
+            "Zachary Brickson",
+            "Bailey Roberts",
+            "Bailey Roberts",
+            "Christina Ghiardi",
+            "Sarah Knutson",
+            "Mallory Sweeney",
+            "Ben Strassman",
+            "Carmen Rossi",
+            "Ben Strassman",
+            "Matthew Jacome",
+            "Madeline Diehl",
+            "Camille Kellems",
+            "Paityn Lauzon",
+            "Selena Knowlton"
+          ]
+        },
+        "I Left My Heart In San Francisco": {
+          "dancers": [
+            "Robert Fulton",
+            "Bailey Roberts",
+            "Rebecca Haftl",
+            "Cameron Kesten",
+            "Wyatt Dodd",
+            "Shelby Rambo",
+            "Jessica Ousterhout",
+            "Mackenna Pieper",
+            "Sarah Knutson",
+            "Zachary Brickson",
+            "Ben Strassman",
+            "Carmen Rossi",
+            "Ben Strassman",
+            "Matthew Jacome",
+            "Madeline Diehl",
+            "Camille Kellems",
+            "Paityn Lauzon",
+            "Selena Knowlton"
+          ]
+        },
+        "Fascinatin' Rhythm": {
+          "dancers": [
+            "Leo McGrath",
+            "Brooke Lyness",
+            "Mirella Costa Neto",
+            "Bailey Roberts",
+            "Sarah Knutson",
+            "Mallory Sweeney"
+          ]
+        },
+        "Spring In Manhattan": {
+          "dancers": [
+            "Julia Pasquale",
+            "Shelby Rambo",
+            "Jessica Ousterhout",
+            "Mackenna Pieper",
+            "Sarah Knutson",
+            "Christina Ghiardi",
+            "Madeline Diehl",
+            "Camille Kellems",
+            "Paityn Lauzon",
+            "Selena Knowlton"
+          ]
+        },
+        "De-Lovely": {
+          "dancers": [
+            "Mirella Costa Neto",
+            "Lucas Castro",
+            "Mallory Sweeney",
+            "Bailey Roberts"
+          ]
+        },
+        "Just One Of Those Things": {
+          "dancers": [
+            "Mackenna Pieper",
+            "Bailey Roberts",
+            "Rebecca Haftl",
+            "Cameron Kesten",
+            "Wyatt Dodd",
+            "Paityn Lauzon",
+            "Ben Strassman",
+            "Carmen Rossi",
+            "Ben Strassman",
+            "Matthew Jacome"
+          ]
+        },
+        "Smile": {
+          "dancers": [
+            "Robert Fulton",
+            "Julia Pasquale",
+            "Leo McGrath",
+            "Brooke Lyness",
+            "Zachary Brickson",
+            "Christina Ghiardi",
+            "Bailey Roberts",
+            "Sarah Knutson"
+          ]
+        },
+        "Blue Moon": {
+          "dancers": [
+            "Lucas Castro",
+            "Bailey Roberts",
+            "Rebecca Haftl",
+            "Mackenna Pieper",
+            "Shelby Rambo",
+            "Jessica Ousterhout",
+            "Wyatt Dodd",
+            "Bailey Roberts",
+            "Ben Strassman",
+            "Carmen Rossi",
+            "Paityn Lauzon",
+            "Madeline Diehl",
+            "Camille Kellems",
+            "Matthew Jacome"
+          ]
+        },
+        "It Don't Mean A Thing": {
+          "dancers": [
+            "Bailey Roberts",
+            "Rebecca Haftl",
+            "Cameron Kesten",
+            "Wyatt Dodd",
+            "Shelby Rambo",
+            "Jessica Ousterhout",
+            "Mackenna Pieper",
+            "Sarah Knutson",
+            "Ben Strassman",
+            "Carmen Rossi",
+            "Ben Strassman",
+            "Matthew Jacome",
+            "Madeline Diehl",
+            "Camille Kellems",
+            "Paityn Lauzon",
+            "Selena Knowlton"
+          ]
+        },
+        "How Do You Keep The Music Playing": {
+          "dancers": [
+            "Robert Fulton",
+            "Leo McGrath",
+            "Lucas Castro",
+            "Julia Pasquale",
+            "Brooke Lyness",
+            "Mirella Costa Neto",
+            "Bailey Roberts",
+            "Rebecca Haftl",
+            "Cameron Kesten",
+            "Wyatt Dodd",
+            "Shelby Rambo",
+            "Jessica Ousterhout",
+            "Mackenna Pieper",
+            "Sarah Knutson",
+            "Zachary Brickson",
+            "Bailey Roberts",
+            "Bailey Roberts",
+            "Christina Ghiardi",
+            "Sarah Knutson",
+            "Mallory Sweeney",
+            "Ben Strassman",
+            "Carmen Rossi",
+            "Ben Strassman",
+            "Matthew Jacome",
+            "Madeline Diehl",
+            "Camille Kellems",
+            "Paityn Lauzon",
+            "Selena Knowlton"
+          ]
+        }
+      },
+      "casting_status": "provisional",
+      "casting_note": "Section-by-section pairs \u2014 Zach covers Robert Fulton in 4 sections",
+      "change_history": []
+    },
+    "hansel_and_gretel_2026": {
+      "updated": "2026-04-08",
+      "source_email_id": "historical_seed",
+      "roles": {
+        "Gretel": {
+          "dancers": [
+            "Selena Knowlton",
+            "Paityn Lauzon",
+            "Brooke Lyness",
+            "Julia Pasquale"
+          ]
+        },
+        "Hansel": {
+          "dancers": [
+            "Jack Grohmann",
+            "Matthew Jacome",
+            "Bailey Roberts"
+          ]
+        },
+        "Mother": {
+          "dancers": [
+            "Jaime DeRocker",
+            "Christina Ghiardi",
+            "Jessica Ousterhout",
+            "Mackenna Pieper"
+          ]
+        },
+        "Father": {
+          "dancers": [
+            "Sergio Alvarez",
+            "Lucas Castro",
+            "Cameron Kesten"
+          ]
+        },
+        "The Ice Cream Witch": {
+          "dancers": [
+            "Christina Ghiardi",
+            "Rebecca Haftl",
+            "Brooke Lyness",
+            "Jessica Ousterhout",
+            "Mackenna Pieper"
+          ]
+        },
+        "The Transformed Witch": {
+          "dancers": [
+            "Sergio Alvarez",
+            "Zachary Brickson",
+            "Lucas Castro"
+          ]
+        },
+        "The Sandman": {
+          "dancers": [
+            "Zachary Brickson",
+            "Lucas Castro",
+            "Robert Fulton",
+            "Leo McGrath"
+          ]
+        },
+        "Fairy Queen": {
+          "dancers": [
+            "Mirella Costa Neto",
+            "Jaime DeRocker",
+            "Jessica Ousterhout",
+            "Julia Pasquale"
+          ]
+        },
+        "Fairy King": {
+          "dancers": [
+            "Sergio Alvarez",
+            "Robert Fulton",
+            "Cameron Kesten"
+          ]
+        },
+        "Street Scene": {
+          "dancers": [
+            "Sergio Alvarez",
+            "Sophie Anna Batista",
+            "Kayla Boudreau",
+            "Zachary Brickson",
+            "Mila Busovsky",
+            "Lucas Castro",
+            "Mirella Costa Neto",
+            "Boroka Cserey",
+            "Jaime DeRocker",
+            "Madeline Diehl",
+            "Wyatt Dodd",
+            "Daisy Feinstein",
+            "Robert Fulton",
+            "Totocani Garcia",
+            "Christina Ghiardi",
+            "Jack Grohmann",
+            "Rebecca Haftl",
+            "Julianna Hatton",
+            "Matthew Jacome",
+            "Camille Kellems",
+            "Ava Kelsey",
+            "Madison Kemp",
+            "Cameron Kesten",
+            "Selena Knowlton",
+            "Sarah Knutson",
+            "Chloe LaRouche",
+            "Paityn Lauzon",
+            "Betsy Lucas",
+            "Chloe McAllister",
+            "Leo McGrath",
+            "Natasha Norris",
+            "Vera Nguyen",
+            "Jessica Ousterhout",
+            "Julia Pasquale",
+            "Mackenna Pieper",
+            "Shelby Rambo",
+            "Carmen Rossi",
+            "Anna Sidorovich",
+            "Mikayla Small",
+            "Ellen Smith",
+            "Ben Strassman",
+            "Dariah Strickland",
+            "Mallory Sweeney",
+            "Eden Tenebaum"
+          ]
+        },
+        "Children/Ghost Children": {
+          "dancers": [
+            "Sophie Anna Batista",
+            "Madeline Diehl",
+            "Totocani Garcia",
+            "Jack Grohmann",
+            "Julianna Hatton",
+            "Matthew Jacome",
+            "Ava Kelsey",
+            "Madison Kemp",
+            "Sarah Knutson",
+            "Paityn Lauzon",
+            "Betsy Lucas",
+            "Leo McGrath",
+            "Vera Nguyen",
+            "Natasha Norris",
+            "Shelby Rambo",
+            "Bailey Roberts",
+            "Anna Sidorovich",
+            "Ben Strassman"
+          ]
+        },
+        "Boogiemen": {
+          "dancers": [
+            "Issac Aguirre",
+            "Zachary Brickson",
+            "Mila Busovsky",
+            "Kayla Boudreau",
+            "Wyatt Dodd",
+            "Jack Grohmann",
+            "Matthew Jacome",
+            "Cameron Kesten",
+            "Chloe Larouche",
+            "Chloe McAllister",
+            "Bailey Roberts",
+            "Carmen Rossi",
+            "Ben Strassman",
+            "Dariah Strickland",
+            "Mallory Sweeney",
+            "Eden Tenebaum"
+          ]
+        },
+        "Fairy Cavaliers": {
+          "dancers": [
+            "Issac Aguirre",
+            "Zachary Brickson",
+            "Wyatt Dodd",
+            "Jack Grohmann",
+            "Matthew Jacome",
+            "Cameron Kesten",
+            "Leo McGrath",
+            "Bailey Roberts"
+          ]
+        },
+        "Dew Fairies": {
+          "dancers": [
+            "Kayla Boudreau",
+            "Mirella Costa Neto",
+            "Jaime DeRocker",
+            "Madeline Diehl",
+            "Daisy Feinstein",
+            "Rebecca Haftl",
+            "Camille Kellems",
+            "Selena Knowlton",
+            "Sarah Knutson",
+            "Chloe Larouche",
+            "Paityn Lauzon",
+            "Brooke Lyness",
+            "Betsy Lucas",
+            "Chloe McAllister",
+            "Jessica Ousterhout",
+            "Julia Pasquale",
+            "Mackenna Pieper",
+            "Shelby Rambo",
+            "Carmen Rossi",
+            "Mikayla Small",
+            "Ellen Smith",
+            "Mallory Sweeney"
+          ]
+        },
+        "Gingerbread Men": {
+          "dancers": [
+            "Issac Aguirre",
+            "Sergio Alvarez",
+            "Zachary Brickson",
+            "Lucas Castro",
+            "Wyatt Dodd",
+            "Robert Fulton",
+            "Totocani Garcia",
+            "Jack Grohmann",
+            "Matthew Jacome",
+            "Cameron Kesten",
+            "Leo McGrath",
+            "Bailey Roberts",
+            "Ben Strassman"
+          ]
+        },
+        "Chorus of Witches": {
+          "dancers": [
+            "Kayla Boudreau",
+            "Boroka Cserey",
+            "Mirella Costa Neto",
+            "Jaime DeRocker",
+            "Madeline Diehl",
+            "Daisy Feinstein",
+            "Christina Ghiardi",
+            "Rebecca Haftl",
+            "Camille Kellems",
+            "Ava Kelsey",
+            "Selena Knowlton",
+            "Sarah Knutson",
+            "Chloe Larouche",
+            "Paityn Lauzon",
+            "Betsy Lucas",
+            "Brooke Lyness",
+            "Chloe McAllister",
+            "Jessica Ousterhout",
+            "Julia Pasquale",
+            "Mackenna Pieper",
+            "Shelby Rambo",
+            "Carmen Rossi",
+            "Mikayla Small",
+            "Ellen Smith",
+            "Dariah Strickland",
+            "Mallory Sweeney",
+            "Eden Tenebaum"
+          ]
+        }
+      },
+      "casting_status": "provisional",
+      "casting_note": "Role Responsibilities list \u2014 Brooke explicitly said NOT performance casting. Final casting TBD.",
+      "change_history": []
+    }
+  },
+  "dancer_index": {
+    "Cameron Kesten": {
+      "nutcracker_2025_dec": [
+        "Dr. Stahlbaum",
+        "Male Parent 1",
+        "Herr Drosselmeier",
+        "Mouse King",
+        "Mouse 4",
+        "Her Cavalier"
+      ],
+      "nutcracker_2025_nov": [
+        "Dr. Stahlbaum",
+        "Male Parent 1",
+        "Herr Drosselmeier",
+        "Mouse King",
+        "Mouse 4",
+        "Her Cavalier"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Male)"
+      ],
+      "company_b_2026_mar": [
+        "Joseph!",
+        "Another You"
+      ],
+      "zigzag_2026_overview": [
+        "Eric Tamm / Sung Woo Han"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Just One Of Those Things",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Father",
+        "Fairy King",
+        "Street Scene",
+        "Boogiemen",
+        "Fairy Cavaliers",
+        "Gingerbread Men"
+      ]
+    },
+    "Sergio Alvarez": {
+      "nutcracker_2025_dec": [
+        "Dr. Stahlbaum",
+        "Herr Drosselmeier",
+        "Hot Chocolate Principal (M)",
+        "Her Cavalier"
+      ],
+      "nutcracker_2025_nov": [
+        "Dr. Stahlbaum",
+        "Herr Drosselmeier",
+        "Hot Chocolate Principal (M)",
+        "Her Cavalier"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Male)"
+      ],
+      "hansel_and_gretel_2026": [
+        "Father",
+        "The Transformed Witch",
+        "Fairy King",
+        "Street Scene",
+        "Gingerbread Men"
+      ]
+    },
+    "Lucas Castro": {
+      "nutcracker_2025_dec": [
+        "Dr. Stahlbaum",
+        "Male Parent 1",
+        "Mouse 8",
+        "Hot Chocolate Principal (M)",
+        "Her Cavalier"
+      ],
+      "nutcracker_2025_nov": [
+        "Dr. Stahlbaum",
+        "Male Parent 1",
+        "Mouse 8",
+        "Hot Chocolate Principal (M)",
+        "Her Cavalier"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Male)"
+      ],
+      "company_b_2026_mar": [
+        "Tico-Tico",
+        "Another You"
+      ],
+      "red_angels_2026": [
+        "Albert"
+      ],
+      "zigzag_2026_overview": [
+        "Joo Wan Ahn / Calvin Royal"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "De-Lovely",
+        "Blue Moon",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Father",
+        "The Transformed Witch",
+        "The Sandman",
+        "Street Scene",
+        "Gingerbread Men"
+      ]
+    },
+    "Robert Fulton": {
+      "nutcracker_2025_dec": [
+        "Dr. Stahlbaum",
+        "Hot Chocolate Principal (M)",
+        "Candy Canes Principal",
+        "Her Cavalier"
+      ],
+      "nutcracker_2025_nov": [
+        "Dr. Stahlbaum",
+        "Hot Chocolate Principal (M)",
+        "Candy Canes Principal",
+        "Her Cavalier"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Male)"
+      ],
+      "company_b_2026_mar": [
+        "Pennsylvania Polka",
+        "Joseph!",
+        "Bugle Boy"
+      ],
+      "red_angels_2026": [
+        "Peter"
+      ],
+      "zigzag_2026_overview": [
+        "Cory Stearns / Aran Bell"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Smile",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "The Sandman",
+        "Fairy King",
+        "Street Scene",
+        "Gingerbread Men"
+      ]
+    },
+    "Christina Ghiardi": {
+      "nutcracker_2025_dec": [
+        "Frau Stahlbaum",
+        "Snowflake 3",
+        "Coffee 1",
+        "Waltz of the Flowers - Dew Drop"
+      ],
+      "nutcracker_2025_nov": [
+        "Frau Stahlbaum",
+        "Snowflake 3",
+        "Coffee 1",
+        "Waltz of the Flowers - Dew Drop"
+      ],
+      "red_angels_2026": [
+        "Darci"
+      ],
+      "zigzag_2026_overview": [
+        "Devon Teuscher / Isabella Boyleston"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "Spring In Manhattan",
+        "Smile",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Mother",
+        "The Ice Cream Witch",
+        "Street Scene",
+        "Chorus of Witches"
+      ]
+    },
+    "Brooke Lyness": {
+      "nutcracker_2025_dec": [
+        "Frau Stahlbaum",
+        "Grandmother",
+        "Snowflake 8",
+        "Hot Chocolate Principal (F)",
+        "Waltz of the Flowers - Demi 2"
+      ],
+      "nutcracker_2025_nov": [
+        "Frau Stahlbaum",
+        "Grandmother",
+        "Snowflake 8",
+        "Hot Chocolate Principal (F)",
+        "Waltz of the Flowers - Demi 2"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "I Can Dream, Can't I?",
+        "Joseph!"
+      ],
+      "zigzag_2026_overview": [
+        "Cassandra Trenary / Catherine Hurlin"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "Fascinatin' Rhythm",
+        "Smile",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Gretel",
+        "The Ice Cream Witch",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Jessica Ousterhout": {
+      "nutcracker_2025_dec": [
+        "Frau Stahlbaum",
+        "Snowflake 9",
+        "The Sugarplum Fairy",
+        "Waltz of the Flowers - Dew Drop",
+        "Waltz of the Flowers - Demi 2"
+      ],
+      "nutcracker_2025_nov": [
+        "Frau Stahlbaum",
+        "Snowflake 9",
+        "The Sugarplum Fairy",
+        "Waltz of the Flowers - Dew Drop",
+        "Waltz of the Flowers - Demi 2"
+      ],
+      "red_angels_2026": [
+        "Wendy"
+      ],
+      "zigzag_2026_overview": [
+        "Sierra Armstrong / Courtney Lavine"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Spring In Manhattan",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Mother",
+        "The Ice Cream Witch",
+        "Fairy Queen",
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Layla Naldoza": {
+      "nutcracker_2025_dec": [
+        "Marie"
+      ],
+      "nutcracker_2025_nov": [
+        "Marie"
+      ]
+    },
+    "Aria Corpuz": {
+      "nutcracker_2025_dec": [
+        "Marie"
+      ],
+      "nutcracker_2025_nov": [
+        "Marie"
+      ]
+    },
+    "Alivia Becker": {
+      "nutcracker_2025_dec": [
+        "Fritz"
+      ],
+      "nutcracker_2025_nov": [
+        "Fritz"
+      ]
+    },
+    "Nora Frerich": {
+      "nutcracker_2025_dec": [
+        "Fritz"
+      ],
+      "nutcracker_2025_nov": [
+        "Fritz"
+      ]
+    },
+    "Carmen Rossi": {
+      "nutcracker_2025_dec": [
+        "Maid 1",
+        "Female Parent 1",
+        "Snowflake 13"
+      ],
+      "nutcracker_2025_nov": [
+        "Maid 1",
+        "Female Parent 1",
+        "Snowflake 13"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "I Can Dream, Can't I?",
+        "Joseph!"
+      ],
+      "zigzag_2026_overview": [
+        "Joseph Markey / Abby Morrison"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Just One Of Those Things",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Boogiemen",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Zuzu Donovan": {
+      "nutcracker_2025_dec": [
+        "Maid 1",
+        "Mouse 6",
+        "Bed Op"
+      ],
+      "nutcracker_2025_nov": [
+        "Maid 1",
+        "Mouse 6",
+        "Bed Op"
+      ]
+    },
+    "Mallory Sweeney": {
+      "nutcracker_2025_dec": [
+        "Maid 2",
+        "Female Parent 2",
+        "Snowflake 14"
+      ],
+      "nutcracker_2025_nov": [
+        "Maid 2",
+        "Female Parent 2",
+        "Snowflake 14"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "Joseph!",
+        "Rum And Cola"
+      ],
+      "zigzag_2026_overview": [
+        "Lucianna Paris / Katie Williams"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "Fascinatin' Rhythm",
+        "De-Lovely",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Boogiemen",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Kayla Boudreau": {
+      "nutcracker_2025_dec": [
+        "Maid 2",
+        "Mouse 8",
+        "Snowflake 1",
+        "Snowflake 3",
+        "Snowflake 5"
+      ],
+      "nutcracker_2025_nov": [
+        "Maid 2",
+        "Mouse 8",
+        "Snowflake 1",
+        "Snowflake 3",
+        "Snowflake 5"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Boogiemen",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Rebecca Haftl": {
+      "nutcracker_2025_dec": [
+        "Female Parent 1",
+        "Snowflake 3",
+        "Waltz of the Flowers - Demi 1"
+      ],
+      "nutcracker_2025_nov": [
+        "Female Parent 1",
+        "Snowflake 3",
+        "Waltz of the Flowers - Demi 1"
+      ],
+      "zigzag_2026_overview": [
+        "Joseph Markey / Abby Morrison"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Just One Of Those Things",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "The Ice Cream Witch",
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Mackenna Pieper": {
+      "nutcracker_2025_dec": [
+        "Female Parent 1",
+        "Snowflake 11",
+        "Coffee 1"
+      ],
+      "nutcracker_2025_nov": [
+        "Female Parent 1",
+        "Snowflake 11",
+        "Coffee 1"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "red_angels_2026": [
+        "Darci"
+      ],
+      "zigzag_2026_overview": [
+        "Isadora Loyola / Lauren Bonfiglio"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Spring In Manhattan",
+        "Just One Of Those Things",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Mother",
+        "The Ice Cream Witch",
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Camille Kellems": {
+      "nutcracker_2025_dec": [
+        "Female Parent 2",
+        "Harlequin",
+        "Snowflake 4",
+        "Marzipan Principal",
+        "Waltz of the Flowers - Demi 1"
+      ],
+      "nutcracker_2025_nov": [
+        "Female Parent 2",
+        "Harlequin",
+        "Snowflake 4",
+        "Marzipan Principal",
+        "Waltz of the Flowers - Demi 1"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "Another You"
+      ],
+      "zigzag_2026_overview": [
+        "Sierra Armstrong / Courtney Lavine"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Spring In Manhattan",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Selena Knowlton": {
+      "nutcracker_2025_dec": [
+        "Female Parent 2",
+        "Snowflake 5",
+        "Waltz of the Flowers - Demi 2"
+      ],
+      "nutcracker_2025_nov": [
+        "Female Parent 2",
+        "Snowflake 5",
+        "Waltz of the Flowers - Demi 2"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "Joseph!",
+        "Rum And Cola"
+      ],
+      "zigzag_2026_overview": [
+        "Betsey McBride / Breanne Granlund"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Spring In Manhattan",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Gretel",
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Chloe McAllister": {
+      "nutcracker_2025_dec": [
+        "Female Parent 3",
+        "Snowflake 11",
+        "Snowflake 14"
+      ],
+      "nutcracker_2025_nov": [
+        "Female Parent 3",
+        "Snowflake 11",
+        "Snowflake 14"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Boogiemen",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Julia Pasquale": {
+      "nutcracker_2025_dec": [
+        "Female Parent 3",
+        "Snowflake 10",
+        "The Sugarplum Fairy",
+        "Marzipan Principal",
+        "Waltz of the Flowers - Dew Drop"
+      ],
+      "nutcracker_2025_nov": [
+        "Female Parent 3",
+        "Snowflake 10",
+        "The Sugarplum Fairy",
+        "Marzipan Principal",
+        "Waltz of the Flowers - Dew Drop"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "Another You"
+      ],
+      "red_angels_2026": [
+        "Wendy"
+      ],
+      "zigzag_2026_overview": [
+        "Devon Teuscher / Isabella Boyleston"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "Spring In Manhattan",
+        "Smile",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Gretel",
+        "Fairy Queen",
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Jaime DeRocker": {
+      "nutcracker_2025_dec": [
+        "Female Parent 3",
+        "Snowflake 1",
+        "The Sugarplum Fairy",
+        "Marzipan Principal",
+        "Waltz of the Flowers - Demi 1"
+      ],
+      "nutcracker_2025_nov": [
+        "Female Parent 3",
+        "Snowflake 1",
+        "The Sugarplum Fairy",
+        "Marzipan Principal",
+        "Waltz of the Flowers - Demi 1"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "I Can Dream, Can't I?"
+      ],
+      "hansel_and_gretel_2026": [
+        "Mother",
+        "Fairy Queen",
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Mirella Costa Neto": {
+      "nutcracker_2025_dec": [
+        "Female Parent 4",
+        "Snowflake 10",
+        "The Sugarplum Fairy",
+        "Hot Chocolate Principal (F)",
+        "Waltz of the Flowers - Demi 2"
+      ],
+      "nutcracker_2025_nov": [
+        "Female Parent 4",
+        "Snowflake 10",
+        "The Sugarplum Fairy",
+        "Hot Chocolate Principal (F)",
+        "Waltz of the Flowers - Demi 2"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "red_angels_2026": [
+        "Mirella Costa Neto (role unspecified)"
+      ],
+      "zigzag_2026_overview": [
+        "Lucianna Paris / Katie Williams"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "Fascinatin' Rhythm",
+        "De-Lovely",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Fairy Queen",
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Madeline Diehl": {
+      "nutcracker_2025_dec": [
+        "Female Parent 4",
+        "Snowflake 2"
+      ],
+      "nutcracker_2025_nov": [
+        "Female Parent 4",
+        "Snowflake 2"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "Joseph!"
+      ],
+      "red_angels_2026": [
+        "Madeline Diehl (role unspecified)"
+      ],
+      "zigzag_2026_overview": [
+        "Erica Lall / Zimmi Coker"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Spring In Manhattan",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Boroka Cserey": {
+      "nutcracker_2025_dec": [
+        "Female Parent 4",
+        "Mouse 1",
+        "Snowflake 4"
+      ],
+      "nutcracker_2025_nov": [
+        "Female Parent 4",
+        "Mouse 1",
+        "Snowflake 4"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Chorus of Witches"
+      ]
+    },
+    "Zachary Brickson": {
+      "nutcracker_2025_dec": [
+        "Male Parent 2",
+        "Mouse King",
+        "Mouse 4",
+        "Mother Ginger"
+      ],
+      "nutcracker_2025_nov": [
+        "Male Parent 2",
+        "Mouse King",
+        "Mouse 4",
+        "Mother Ginger"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Male)"
+      ],
+      "zigzag_2026_overview": [
+        "Cory Stearns / Aran Bell"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Smile",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "The Transformed Witch",
+        "The Sandman",
+        "Street Scene",
+        "Boogiemen",
+        "Fairy Cavaliers",
+        "Gingerbread Men"
+      ]
+    },
+    "Issac Aguirre": {
+      "nutcracker_2025_dec": [
+        "Male Parent 2",
+        "Mouse 6"
+      ],
+      "nutcracker_2025_nov": [
+        "Male Parent 2",
+        "Mouse 6"
+      ],
+      "hansel_and_gretel_2026": [
+        "Boogiemen",
+        "Fairy Cavaliers",
+        "Gingerbread Men"
+      ]
+    },
+    "Jack Grohmann": {
+      "nutcracker_2025_dec": [
+        "Male Parent 3",
+        "Soldier",
+        "Mouse 5",
+        "Tea Principal",
+        "Candy Canes Principal"
+      ],
+      "nutcracker_2025_nov": [
+        "Male Parent 3",
+        "Soldier",
+        "Mouse 5",
+        "Tea Principal",
+        "Candy Canes Principal"
+      ],
+      "hansel_and_gretel_2026": [
+        "Hansel",
+        "Street Scene",
+        "Children/Ghost Children",
+        "Boogiemen",
+        "Fairy Cavaliers",
+        "Gingerbread Men"
+      ]
+    },
+    "Nathan Huffman": {
+      "nutcracker_2025_dec": [
+        "Male Parent 3",
+        "Mouse 8"
+      ],
+      "nutcracker_2025_nov": [
+        "Male Parent 3",
+        "Mouse 8"
+      ]
+    },
+    "Bailey Roberts": {
+      "nutcracker_2025_dec": [
+        "Male Parent 3",
+        "Grandfather",
+        "Soldier",
+        "Mouse 3",
+        "Tea Principal",
+        "Candy Canes Principal"
+      ],
+      "nutcracker_2025_nov": [
+        "Male Parent 3",
+        "Grandfather",
+        "Soldier",
+        "Mouse 3",
+        "Tea Principal",
+        "Candy Canes Principal"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Male)"
+      ],
+      "company_b_2026_mar": [
+        "Bugle Boy"
+      ],
+      "red_angels_2026": [
+        "Peter"
+      ],
+      "zigzag_2026_overview": [
+        "James Whiteside / Blaine Hoven",
+        "Joo Wan Ahn / Calvin Royal",
+        "Carlos Gonzalez / Tyler Maloney"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Fascinatin' Rhythm",
+        "De-Lovely",
+        "Just One Of Those Things",
+        "Smile",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Hansel",
+        "Children/Ghost Children",
+        "Boogiemen",
+        "Fairy Cavaliers",
+        "Gingerbread Men"
+      ]
+    },
+    "Ben Strassman": {
+      "nutcracker_2025_dec": [
+        "Male Parent 4",
+        "Mouse 2",
+        "Tea Principal"
+      ],
+      "nutcracker_2025_nov": [
+        "Male Parent 4",
+        "Mouse 2",
+        "Tea Principal"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Male)"
+      ],
+      "company_b_2026_mar": [
+        "Pennsylvania Polka",
+        "Joseph!"
+      ],
+      "zigzag_2026_overview": [
+        "Carlos Gonzalez / Tyler Maloney",
+        "Eric Tamm / Sung Woo Han"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Just One Of Those Things",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children",
+        "Boogiemen",
+        "Gingerbread Men"
+      ]
+    },
+    "Matthew Jacome": {
+      "nutcracker_2025_dec": [
+        "Male Parent 4",
+        "Mouse 7"
+      ],
+      "nutcracker_2025_nov": [
+        "Male Parent 4",
+        "Mouse 7"
+      ],
+      "company_b_2026_mar": [
+        "Tico-Tico",
+        "Oh Johnny, Oh Johnny, Oh!",
+        "Joseph!"
+      ],
+      "zigzag_2026_overview": [
+        "Melvin Lawovi / Javier Rivet"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Just One Of Those Things",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Hansel",
+        "Street Scene",
+        "Children/Ghost Children",
+        "Boogiemen",
+        "Fairy Cavaliers",
+        "Gingerbread Men"
+      ]
+    },
+    "Leo McGrath": {
+      "nutcracker_2025_dec": [
+        "Male Parent 4",
+        "Soldier",
+        "Mouse 5",
+        "Tea Principal",
+        "Candy Canes Principal"
+      ],
+      "nutcracker_2025_nov": [
+        "Male Parent 4",
+        "Soldier",
+        "Mouse 5",
+        "Tea Principal",
+        "Candy Canes Principal"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Male)"
+      ],
+      "company_b_2026_mar": [
+        "Oh Johnny, Oh Johnny, Oh!",
+        "Joseph!"
+      ],
+      "zigzag_2026_overview": [
+        "James Whiteside / Blaine Hoven"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "Fascinatin' Rhythm",
+        "Smile",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "The Sandman",
+        "Street Scene",
+        "Children/Ghost Children",
+        "Fairy Cavaliers",
+        "Gingerbread Men"
+      ]
+    },
+    "Sarah Knutson": {
+      "nutcracker_2025_dec": [
+        "Grandmother",
+        "Columbine",
+        "Snowflake 6"
+      ],
+      "nutcracker_2025_nov": [
+        "Grandmother",
+        "Columbine",
+        "Snowflake 6"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "Pennsylvania Polka",
+        "Joseph!"
+      ],
+      "zigzag_2026_overview": [
+        "Cassandra Trenary / Catherine Hurlin",
+        "Betsey McBride / Breanne Granlund"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Fascinatin' Rhythm",
+        "Spring In Manhattan",
+        "Smile",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Paityn Lauzon": {
+      "nutcracker_2025_dec": [
+        "Grandmother",
+        "Snowflake 7",
+        "Hot Chocolate Principal (F)",
+        "Waltz of the Flowers - Demi 1"
+      ],
+      "nutcracker_2025_nov": [
+        "Grandmother",
+        "Snowflake 7",
+        "Hot Chocolate Principal (F)",
+        "Waltz of the Flowers - Demi 1"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "Rum And Cola"
+      ],
+      "zigzag_2026_overview": [
+        "Isadora Loyola / Lauren Bonfiglio"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Spring In Manhattan",
+        "Just One Of Those Things",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Gretel",
+        "Street Scene",
+        "Children/Ghost Children",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Wyatt Dodd": {
+      "nutcracker_2025_dec": [
+        "Grandfather",
+        "Mouse King",
+        "Mouse 1",
+        "Mother Ginger"
+      ],
+      "nutcracker_2025_nov": [
+        "Grandfather",
+        "Mouse King",
+        "Mouse 1",
+        "Mother Ginger"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Male)"
+      ],
+      "company_b_2026_mar": [
+        "Joseph!"
+      ],
+      "zigzag_2026_overview": [
+        "Melvin Lawovi / Javier Rivet"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Just One Of Those Things",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Boogiemen",
+        "Fairy Cavaliers",
+        "Gingerbread Men"
+      ]
+    },
+    "Leo Ameika": {
+      "nutcracker_2025_dec": [
+        "Herr Drosselmeier",
+        "Mouse King",
+        "Hot Chocolate Principal (M)"
+      ],
+      "nutcracker_2025_nov": [
+        "Herr Drosselmeier",
+        "Mouse King",
+        "Hot Chocolate Principal (M)"
+      ]
+    },
+    "Charlie Stover": {
+      "nutcracker_2025_dec": [
+        "His Nephew"
+      ],
+      "nutcracker_2025_nov": [
+        "His Nephew"
+      ]
+    },
+    "Uriel Gonzalez": {
+      "nutcracker_2025_dec": [
+        "His Nephew"
+      ],
+      "nutcracker_2025_nov": [
+        "His Nephew"
+      ]
+    },
+    "Daisy Feinstein": {
+      "nutcracker_2025_dec": [
+        "Harlequin",
+        "Snowflake 15"
+      ],
+      "nutcracker_2025_nov": [
+        "Harlequin",
+        "Snowflake 15"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Shelby Rambo": {
+      "nutcracker_2025_dec": [
+        "Columbine",
+        "Snowflake 12",
+        "Marzipan Principal"
+      ],
+      "nutcracker_2025_nov": [
+        "Columbine",
+        "Snowflake 12",
+        "Marzipan Principal"
+      ],
+      "company_b_2026_feb": [
+        "Company B Members (Female)"
+      ],
+      "company_b_2026_mar": [
+        "Pennsylvania Polka"
+      ],
+      "zigzag_2026_overview": [
+        "Erica Lall / Zimmi Coker"
+      ],
+      "zigzag_sections_2026": [
+        "What The World Needs Now Is Love",
+        "I Left My Heart In San Francisco",
+        "Spring In Manhattan",
+        "Blue Moon",
+        "It Don't Mean A Thing",
+        "How Do You Keep The Music Playing"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Totocani Garcia": {
+      "nutcracker_2025_dec": [
+        "Soldier",
+        "Mouse 3",
+        "Tea Principal",
+        "Bed Op"
+      ],
+      "nutcracker_2025_nov": [
+        "Soldier",
+        "Mouse 3",
+        "Tea Principal",
+        "Bed Op"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children",
+        "Gingerbread Men"
+      ]
+    },
+    "Mila Buvosky": {
+      "nutcracker_2025_dec": [
+        "Mouse 2"
+      ],
+      "nutcracker_2025_nov": [
+        "Mouse 2"
+      ]
+    },
+    "Mia Patton": {
+      "nutcracker_2025_dec": [
+        "Mouse 4",
+        "Snowflake 9"
+      ],
+      "nutcracker_2025_nov": [
+        "Mouse 4",
+        "Snowflake 9"
+      ]
+    },
+    "Dariah Strickland": {
+      "nutcracker_2025_dec": [
+        "Mouse 5",
+        "Snowflake 13"
+      ],
+      "nutcracker_2025_nov": [
+        "Mouse 5",
+        "Snowflake 13"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Boogiemen",
+        "Chorus of Witches"
+      ]
+    },
+    "Chloe LaRouche": {
+      "nutcracker_2025_dec": [
+        "Mouse 7",
+        "Snowflake 10"
+      ],
+      "nutcracker_2025_nov": [
+        "Mouse 7",
+        "Snowflake 10"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene"
+      ]
+    },
+    "Alexis Minnich": {
+      "nutcracker_2025_dec": [
+        "Snowflake 2"
+      ],
+      "nutcracker_2025_nov": [
+        "Snowflake 2"
+      ]
+    },
+    "Anna Sidorovich": {
+      "nutcracker_2025_dec": [
+        "Snowflake 6"
+      ],
+      "nutcracker_2025_nov": [
+        "Snowflake 6"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children"
+      ]
+    },
+    "Eden Tenebaum": {
+      "nutcracker_2025_dec": [
+        "Snowflake 7"
+      ],
+      "nutcracker_2025_nov": [
+        "Snowflake 7"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Boogiemen",
+        "Chorus of Witches"
+      ]
+    },
+    "Ava James Kelsey": {
+      "nutcracker_2025_dec": [
+        "Snowflake 8"
+      ],
+      "nutcracker_2025_nov": [
+        "Snowflake 8"
+      ]
+    },
+    "Julia Cornette": {
+      "nutcracker_2025_dec": [
+        "Snowflake 12"
+      ],
+      "nutcracker_2025_nov": [
+        "Snowflake 12"
+      ]
+    },
+    "Sophie Anna Batista": {
+      "nutcracker_2025_dec": [
+        "Snowflake 15"
+      ],
+      "nutcracker_2025_nov": [
+        "Snowflake 15"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children"
+      ]
+    },
+    "Ellen Smith": {
+      "nutcracker_2025_dec": [
+        "Snowflake 16 (12.14 ver)"
+      ],
+      "nutcracker_2025_nov": [
+        "Snowflake 16 (12.14 ver)"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Vera Nguyen": {
+      "nutcracker_2025_dec": [
+        "Snowflake 16 (12.14 ver)"
+      ],
+      "nutcracker_2025_nov": [
+        "Snowflake 16 (12.14 ver)"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children"
+      ]
+    },
+    "Madison Kemp": {
+      "nutcracker_2025_dec": [
+        "Snowflake 16 (12.14 ver)"
+      ],
+      "nutcracker_2025_nov": [
+        "Snowflake 16 (12.14 ver)"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children"
+      ]
+    },
+    "Jessica Ousterhout/Rebecca Haftl": {
+      "nutcracker_2025_dec": [
+        "Coffee 1"
+      ],
+      "nutcracker_2025_nov": [
+        "Coffee 1"
+      ]
+    },
+    "Rebecca Haftl/Mackenna Pieper": {
+      "nutcracker_2025_dec": [
+        "Waltz of the Flowers - Dew Drop"
+      ],
+      "nutcracker_2025_nov": [
+        "Waltz of the Flowers - Dew Drop"
+      ]
+    },
+    "Natasha Norris": {
+      "nutcracker_2025_dec": [
+        "Bed Op"
+      ],
+      "nutcracker_2025_nov": [
+        "Bed Op"
+      ],
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children"
+      ]
+    },
+    "Full Cast": {
+      "company_b_2026_mar": [
+        "Bei Mir Bist du Schon (opening)",
+        "Bei Mir Bist du Schon (Closing)"
+      ]
+    },
+    "Mila Busovsky": {
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Boogiemen"
+      ]
+    },
+    "Mikayla Small": {
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Ava Kelsey": {
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children",
+        "Chorus of Witches"
+      ]
+    },
+    "Julianna Hatton": {
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children"
+      ]
+    },
+    "Betsy Lucas": {
+      "hansel_and_gretel_2026": [
+        "Street Scene",
+        "Children/Ghost Children",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    },
+    "Chloe Larouche": {
+      "hansel_and_gretel_2026": [
+        "Boogiemen",
+        "Dew Fairies",
+        "Chorus of Witches"
+      ]
+    }
+  },
+  "last_updated": "2026-04-10T00:37:18.392121"
+}
