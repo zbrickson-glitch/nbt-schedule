@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBT Schedule Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #FFF5F7;
+            --card: #FFFFFF;
+            --text: #4A1942;
+            --text-secondary: #7A5C78;
+            --accent: #E91E8C;
+            --accent-light: #FCE4F3;
+            --tab-inactive: #B8A0B4;
+            --border: #F0E0EC;
+            --shadow: 0 2px 12px rgba(74, 25, 66, 0.08);
+            --danger: #D32F2F;
+            --danger-light: #FFEBEE;
+            --success: #388E3C;
+            --manual-badge: #7B1FA2;
+            --manual-badge-bg: #F3E5F5;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            flex: 1;
+        }
+
+        .header-badge {
+            background: var(--accent);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Week nav */
+        .week-nav {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: none;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 14px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .week-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .today-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            transition: opacity 0.15s;
+        }
+
+        .today-btn:hover { opacity: 0.85; }
+
+        /* Main content */
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Day card */
+        .day-card {
+            background: var(--card);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, var(--bg) 0%, #FDE8F4 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .day-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .day-label.today {
+            color: var(--accent);
+        }
+
+        .day-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .add-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 14px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            transition: opacity 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .add-btn:hover { opacity: 0.85; }
+
+        /* Event list */
+        .event-list {
+            padding: 8px 0;
+            min-height: 40px;
+        }
+
+        .event-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background 0.12s;
+            border-bottom: 1px solid transparent;
+        }
+
+        .event-row:last-child { border-bottom: none; }
+
+        .event-row:hover {
+            background: var(--accent-light);
+        }
+
+        .event-time {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            min-width: 75px;
+            padding-top: 1px;
+        }
+
+        .event-info {
+            flex: 1;
+        }
+
+        .event-show {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .event-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .event-badges {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-manual {
+            background: var(--manual-badge-bg);
+            color: var(--manual-badge);
+        }
+
+        .badge-revised {
+            background: #FFF8E1;
+            color: #F57F17;
+        }
+
+        .badge-type {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .empty-day {
+            padding: 12px 16px;
+            color: var(--tab-inactive);
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        /* Loading / status */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(74, 25, 66, 0.35);
+            z-index: 500;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--card);
+            border-radius: 18px;
+            box-shadow: 0 8px 40px rgba(74, 25, 66, 0.22);
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 22px;
+            color: var(--text-secondary);
+            line-height: 1;
+            padding: 2px 6px;
+            border-radius: 6px;
+            transition: background 0.12s;
+        }
+
+        .modal-close:hover { background: var(--bg); }
+
+        .modal-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* Form fields */
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 10px;
+            color: var(--text);
+            background: var(--bg);
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 64px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .checkbox-row label {
+            font-size: 14px;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        /* Modal footer */
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 20px 18px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            padding: 9px 20px;
+            cursor: pointer;
+            transition: opacity 0.15s, background 0.15s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover { opacity: 0.85; }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover { background: #E8D0E4; }
+
+        .btn-danger {
+            background: var(--danger-light);
+            color: var(--danger);
+            margin-left: auto;
+        }
+
+        .btn-danger:hover { background: #FFCDD2; }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--text);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: transform 0.25s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success { background: #2E7D32; }
+        .toast.error { background: var(--danger); }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-title">NBT Schedule Admin</div>
+    <div class="header-badge">Internal</div>
+</div>
+
+<div class="week-nav">
+    <button class="nav-btn" id="prevWeek">&#8592; Prev</button>
+    <div class="week-label" id="weekLabel"></div>
+    <button class="nav-btn" id="nextWeek">Next &#8594;</button>
+    <button class="today-btn" id="todayBtn">Today</button>
+</div>
+
+<div class="content" id="weekContent">
+    <div class="loading">Loading schedule...</div>
+</div>
+
+<!-- Event Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title" id="modalTitle">Add Event</div>
+            <button class="modal-close" id="modalClose">&#215;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="fieldDate">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Start Time</label>
+                    <input type="time" id="fieldTimeStart">
+                </div>
+                <div class="form-group">
+                    <label>End Time</label>
+                    <input type="time" id="fieldTimeEnd">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Show</label>
+                    <input type="text" id="fieldShow" placeholder="e.g. ZigZag">
+                </div>
+                <div class="form-group" style="max-width:80px">
+                    <label>Studio</label>
+                    <input type="text" id="fieldStudio" placeholder="1">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Staff</label>
+                    <input type="text" id="fieldStaff" placeholder="e.g. Brooke W.">
+                </div>
+                <div class="form-group">
+                    <label>Event Type</label>
+                    <select id="fieldEventType">
+                        <option value="rehearsal">Rehearsal</option>
+                        <option value="fitting">Fitting</option>
+                        <option value="class">Class</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Cast Type</label>
+                    <input type="text" id="fieldCastType" placeholder="e.g. All Cast">
+                </div>
+                <div class="form-group">
+                    <label>Fitting Dancer</label>
+                    <input type="text" id="fieldFittingDancer" placeholder="Dancer name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea id="fieldNotes" placeholder="Any additional notes..."></textarea>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="fieldIsRevised">
+                <label for="fieldIsRevised">Mark as Revised</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+            <button class="btn btn-primary" id="saveBtn">Save Event</button>
+            <button class="btn btn-danger" id="deleteBtn" style="display:none">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<script>
+    // --- State ---
+    let currentWeekStart = getMonday(new Date());
+    let editingEventId = null;
+
+    // --- Date helpers ---
+    function getMonday(d) {
+        const day = d.getDay();
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        const m = new Date(d);
+        m.setDate(diff);
+        m.setHours(0, 0, 0, 0);
+        return m;
+    }
+
+    function addDays(d, n) {
+        const r = new Date(d);
+        r.setDate(r.getDate() + n);
+        return r;
+    }
+
+    function fmtDate(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    }
+
+    function fmtDisplayDate(d) {
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function fmtDayLabel(d) {
+        return d.toLocaleDateString('en-US', { weekday: 'long' });
+    }
+
+    function isToday(d) {
+        const t = new Date();
+        return d.getFullYear() === t.getFullYear() &&
+               d.getMonth() === t.getMonth() &&
+               d.getDate() === t.getDate();
+    }
+
+    function fmt12(time) {
+        if (!time) return '';
+        const [h, m] = time.split(':').map(Number);
+        const ampm = h >= 12 ? 'pm' : 'am';
+        const h12 = h % 12 || 12;
+        return `${h12}:${String(m).padStart(2,'0')}${ampm}`;
+    }
+
+    // --- Week label ---
+    function updateWeekLabel() {
+        const end = addDays(currentWeekStart, 6);
+        document.getElementById('weekLabel').textContent =
+            `${fmtDisplayDate(currentWeekStart)} – ${fmtDisplayDate(end)}`;
+    }
+
+    // --- Fetch & render ---
+    async function loadWeek() {
+        const content = document.getElementById('weekContent');
+        content.innerHTML = '<div class="loading">Loading...</div>';
+
+        const dateFrom = fmtDate(currentWeekStart);
+        const dateTo = fmtDate(addDays(currentWeekStart, 6));
+
+        let events = [];
+        try {
+            const resp = await fetch(`/admin/events?date_from=${dateFrom}&date_to=${dateTo}`);
+            events = await resp.json();
+        } catch (e) {
+            content.innerHTML = '<div class="loading">Failed to load events.</div>';
+            return;
+        }
+
+        // Group by date string
+        const byDate = {};
+        for (const ev of events) {
+            if (!byDate[ev.date]) byDate[ev.date] = [];
+            byDate[ev.date].push(ev);
+        }
+
+        content.innerHTML = '';
+        for (let i = 0; i < 7; i++) {
+            const day = addDays(currentWeekStart, i);
+            const dateStr = fmtDate(day);
+            const dayEvents = byDate[dateStr] || [];
+            content.appendChild(buildDayCard(day, dateStr, dayEvents));
+        }
+    }
+
+    function buildDayCard(day, dateStr, events) {
+        const card = document.createElement('div');
+        card.className = 'day-card';
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'day-header';
+
+        const leftSide = document.createElement('div');
+        const dayLabel = document.createElement('div');
+        dayLabel.className = 'day-label' + (isToday(day) ? ' today' : '');
+        dayLabel.textContent = fmtDayLabel(day) + (isToday(day) ? ' (Today)' : '');
+        const dateLabel = document.createElement('div');
+        dateLabel.className = 'day-date';
+        dateLabel.textContent = fmtDisplayDate(day);
+        leftSide.appendChild(dayLabel);
+        leftSide.appendChild(dateLabel);
+
+        const addBtn = document.createElement('button');
+        addBtn.className = 'add-btn';
+        addBtn.innerHTML = '<span>+</span> Add Event';
+        addBtn.addEventListener('click', () => openModal(null, dateStr));
+
+        header.appendChild(leftSide);
+        header.appendChild(addBtn);
+        card.appendChild(header);
+
+        // Event list
+        const list = document.createElement('div');
+        list.className = 'event-list';
+
+        if (events.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'empty-day';
+            empty.textContent = 'No events';
+            list.appendChild(empty);
+        } else {
+            for (const ev of events) {
+                list.appendChild(buildEventRow(ev));
+            }
+        }
+
+        card.appendChild(list);
+        return card;
+    }
+
+    function buildEventRow(ev) {
+        const row = document.createElement('div');
+        row.className = 'event-row';
+        row.addEventListener('click', () => openModal(ev));
+
+        const timeEl = document.createElement('div');
+        timeEl.className = 'event-time';
+        const startStr = fmt12(ev.time_start);
+        const endStr = fmt12(ev.time_end);
+        timeEl.textContent = startStr + (endStr ? ' – ' + endStr : '');
+
+        const info = document.createElement('div');
+        info.className = 'event-info';
+
+        const showEl = document.createElement('div');
+        showEl.className = 'event-show';
+        showEl.textContent = ev.show || '(No show)';
+        info.appendChild(showEl);
+
+        const metaParts = [];
+        if (ev.studio) metaParts.push(`Studio ${ev.studio}`);
+        if (ev.staff) metaParts.push(ev.staff);
+        if (ev.cast_type) metaParts.push(ev.cast_type);
+        if (metaParts.length) {
+            const meta = document.createElement('div');
+            meta.className = 'event-meta';
+            meta.textContent = metaParts.join(' · ');
+            info.appendChild(meta);
+        }
+
+        const badges = document.createElement('div');
+        badges.className = 'event-badges';
+
+        if (ev.event_type && ev.event_type !== 'rehearsal') {
+            const b = document.createElement('span');
+            b.className = 'badge badge-type';
+            b.textContent = ev.event_type;
+            badges.appendChild(b);
+        }
+
+        if (ev.source_email_id === 'manual') {
+            const b = document.createElement('span');
+            b.className = 'badge badge-manual';
+            b.textContent = 'Manual';
+            badges.appendChild(b);
+        }
+
+        if (ev.is_revised) {
+            const b = document.createElement('span');
+            b.className = 'badge badge-revised';
+            b.textContent = 'Revised';
+            badges.appendChild(b);
+        }
+
+        if (badges.children.length) info.appendChild(badges);
+
+        row.appendChild(timeEl);
+        row.appendChild(info);
+        return row;
+    }
+
+    // --- Modal ---
+    function openModal(event, defaultDate) {
+        editingEventId = event ? event.id : null;
+
+        document.getElementById('modalTitle').textContent = event ? 'Edit Event' : 'Add Event';
+        document.getElementById('deleteBtn').style.display = event ? 'inline-flex' : 'none';
+
+        // Populate fields
+        document.getElementById('fieldDate').value = event ? event.date : (defaultDate || '');
+        document.getElementById('fieldTimeStart').value = event ? (event.time_start || '') : '';
+        document.getElementById('fieldTimeEnd').value = event ? (event.time_end || '') : '';
+        document.getElementById('fieldShow').value = event ? (event.show || '') : '';
+        document.getElementById('fieldStudio').value = event ? (event.studio || '1') : '1';
+        document.getElementById('fieldStaff').value = event ? (event.staff || '') : '';
+        document.getElementById('fieldEventType').value = event ? (event.event_type || 'rehearsal') : 'rehearsal';
+        document.getElementById('fieldCastType').value = event ? (event.cast_type || '') : '';
+        document.getElementById('fieldFittingDancer').value = event ? (event.fitting_dancer || '') : '';
+        document.getElementById('fieldNotes').value = event ? (event.notes || '') : '';
+        document.getElementById('fieldIsRevised').checked = event ? !!event.is_revised : false;
+
+        document.getElementById('modalOverlay').classList.add('open');
+        document.getElementById('fieldShow').focus();
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('open');
+        editingEventId = null;
+    }
+
+    function getFormData() {
+        return {
+            date: document.getElementById('fieldDate').value,
+            time_start: document.getElementById('fieldTimeStart').value || null,
+            time_end: document.getElementById('fieldTimeEnd').value || null,
+            show: document.getElementById('fieldShow').value.trim() || null,
+            studio: document.getElementById('fieldStudio').value.trim() || '1',
+            staff: document.getElementById('fieldStaff').value.trim() || null,
+            event_type: document.getElementById('fieldEventType').value,
+            cast_type: document.getElementById('fieldCastType').value.trim() || null,
+            fitting_dancer: document.getElementById('fieldFittingDancer').value.trim() || null,
+            notes: document.getElementById('fieldNotes').value.trim() || null,
+            is_revised: document.getElementById('fieldIsRevised').checked,
+        };
+    }
+
+    async function saveEvent() {
+        const data = getFormData();
+        if (!data.date) {
+            showToast('Date is required', 'error');
+            return;
+        }
+
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving...';
+
+        try {
+            let resp;
+            if (editingEventId) {
+                resp = await fetch(`/admin/events/${editingEventId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+            } else {
+                resp = await fetch('/admin/events', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+            }
+
+            if (!resp.ok) {
+                const err = await resp.json().catch(() => ({}));
+                throw new Error(err.detail || 'Save failed');
+            }
+
+            closeModal();
+            showToast(editingEventId ? 'Event updated' : 'Event created', 'success');
+            await loadWeek();
+        } catch (e) {
+            showToast(e.message || 'Error saving event', 'error');
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Save Event';
+        }
+    }
+
+    async function deleteEvent() {
+        if (!editingEventId) return;
+        if (!confirm('Delete this event? This cannot be undone.')) return;
+
+        const deleteBtn = document.getElementById('deleteBtn');
+        deleteBtn.disabled = true;
+        deleteBtn.textContent = 'Deleting...';
+
+        try {
+            const resp = await fetch(`/admin/events/${editingEventId}`, { method: 'DELETE' });
+            if (!resp.ok) {
+                const err = await resp.json().catch(() => ({}));
+                throw new Error(err.detail || 'Delete failed');
+            }
+            closeModal();
+            showToast('Event deleted', 'success');
+            await loadWeek();
+        } catch (e) {
+            showToast(e.message || 'Error deleting event', 'error');
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = 'Delete';
+        }
+    }
+
+    // --- Toast ---
+    let toastTimer = null;
+    function showToast(msg, type = '') {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.className = 'toast' + (type ? ' ' + type : '');
+        // Force reflow
+        el.offsetHeight;
+        el.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+    }
+
+    // --- Event listeners ---
+    document.getElementById('prevWeek').addEventListener('click', () => {
+        currentWeekStart = addDays(currentWeekStart, -7);
+        updateWeekLabel();
+        loadWeek();
+    });
+
+    document.getElementById('nextWeek').addEventListener('click', () => {
+        currentWeekStart = addDays(currentWeekStart, 7);
+        updateWeekLabel();
+        loadWeek();
+    });
+
+    document.getElementById('todayBtn').addEventListener('click', () => {
+        currentWeekStart = getMonday(new Date());
+        updateWeekLabel();
+        loadWeek();
+    });
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('cancelBtn').addEventListener('click', closeModal);
+    document.getElementById('saveBtn').addEventListener('click', saveEvent);
+    document.getElementById('deleteBtn').addEventListener('click', deleteEvent);
+
+    // Close on backdrop click
+    document.getElementById('modalOverlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('modalOverlay')) closeModal();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    // --- Init ---
+    updateWeekLabel();
+    loadWeek();
+</script>
+</body>
+</html>

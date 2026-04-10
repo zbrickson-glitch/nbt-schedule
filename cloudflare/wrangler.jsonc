@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "nbt-schedule-public",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-04-09",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/public/*"]
+  },
+  "vars": {
+    "CORS_ALLOW_ORIGIN": "*",
+    "NBT_SCHEMA": "nbt",
+    "SEASON_ASSET_PATH": "/data/season.json",
+    "SITE_ORIGIN": "https://schedule.naenaewhipwhip.com"
+  },
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "REPLACE_WITH_HYPERDRIVE_ID"
+    }
+  ]
+}

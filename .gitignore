@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+*.egg-info/
+node_modules/
+cloudflare/node_modules/
+cloudflare/.wrangler/
+
+# Corpus PDFs — too large for git, download with tools/fetch_corpus.py
+tests/fixtures/corpus/*.pdf
+tests/fixtures/corpus/manifest.json

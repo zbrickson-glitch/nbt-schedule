@@ -1,0 +1,197 @@
+{
+  "name": "NBT: Brooke Gmail \u2192 Schedule Parser",
+  "nodes": [
+    {
+      "id": "node-schedule",
+      "name": "Every 2 min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "node-gmail",
+      "name": "Gmail - Brooke Emails",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [470, 300],
+      "parameters": {
+        "resource": "message",
+        "operation": "getAll",
+        "returnAll": false,
+        "limit": 10,
+        "filters": {
+          "q": "from:bwahlquist@nevadaballet.org has:attachment is:unread newer_than:10m"
+        },
+        "options": {
+          "downloadAttachments": true,
+          "attachmentsPrefix": "attachment_",
+          "markAsRead": false
+        }
+      },
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9Aqhv52P6B2FqIo8",
+          "name": "Gmail"
+        }
+      }
+    },
+    {
+      "id": "node-if-has-emails",
+      "name": "Has emails?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [690, 300],
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $items().length }}",
+              "operation": "largerEqual",
+              "value2": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "node-build-payload",
+      "name": "Build Ingest Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [910, 200],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const email = $input.item.json;\nconst binary = $input.item.binary || {};\nconst attachments = [];\n\n// Collect all binary fields that are PDFs (n8n prefixes them with attachment_)\nfor (const key of Object.keys(binary)) {\n  if (!key.startsWith('attachment_')) continue;\n  const bin = binary[key];\n  if (\n    (bin.mimeType && bin.mimeType.toLowerCase().includes('pdf')) ||\n    (bin.fileName && bin.fileName.toLowerCase().endsWith('.pdf'))\n  ) {\n    attachments.push({\n      filename: bin.fileName || 'schedule.pdf',\n      data: bin.data  // already base64-encoded by n8n\n    });\n  }\n}\n\nif (attachments.length === 0) {\n  // No PDF attachments on this email - skip it\n  return [];\n}\n\nreturn [\n  {\n    json: {\n      email_id: email.id || email.messageId || '',\n      subject: email.subject || '',\n      body: email.text || email.html || email.snippet || '',\n      attachments: attachments\n    }\n  }\n];\n"
+      }
+    },
+    {
+      "id": "node-post-ingest",
+      "name": "POST to NBT Service",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1130, 200],
+      "parameters": {
+        "method": "POST",
+        "url": "http://nbt-schedule-service.nbt.svc.cluster.local:8080/api/ingest",
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={{ JSON.stringify($json) }}",
+        "options": {
+          "timeout": 60000
+        }
+      }
+    },
+    {
+      "id": "node-log-result",
+      "name": "Log Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1350, 200],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "result-email-id",
+              "name": "email_id",
+              "value": "={{ $('Build Ingest Payload').item.json.email_id }}",
+              "type": "string"
+            },
+            {
+              "id": "result-subject",
+              "name": "subject",
+              "value": "={{ $('Build Ingest Payload').item.json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "result-status",
+              "name": "ingest_status",
+              "value": "={{ $json.status || $json.message || 'ok' }}",
+              "type": "string"
+            },
+            {
+              "id": "result-ts",
+              "name": "processed_at",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every 2 min": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Brooke Emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Brooke Emails": {
+      "main": [
+        [
+          {
+            "node": "Has emails?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has emails?": {
+      "main": [
+        [
+          {
+            "node": "Build Ingest Payload",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Build Ingest Payload": {
+      "main": [
+        [
+          {
+            "node": "POST to NBT Service",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST to NBT Service": {
+      "main": [
+        [
+          {
+            "node": "Log Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "active": false
+}

@@ -1,0 +1,3197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#D4507A">
+    <title>NBT Schedule</title>
+    <meta name="nbt-api-base" content="">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="/icon.svg">
+    <link rel="apple-touch-icon" href="/icon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #FFF5F7;
+            --card: #FFFFFF;
+            --text: #4A1942;
+            --text-secondary: #7A5C78;
+            --accent: #E91E8C;
+            --tab-inactive: #B8A0B4;
+            --border: #F0E0EC;
+            --shadow: 0 2px 12px rgba(74, 25, 66, 0.08);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* Layout container */
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Header */
+        .app-header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .app-header-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+        }
+
+        .app-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.3px;
+        }
+
+        /* Date nav */
+        .date-nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-bottom: 12px;
+        }
+
+        .date-nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .date-nav-btn:hover, .date-nav-btn:active {
+            background: var(--bg);
+            color: var(--accent);
+        }
+
+        .date-display {
+            flex: 1;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 8px;
+            transition: background 0.15s;
+            user-select: none;
+        }
+
+        .date-display:hover {
+            background: var(--bg);
+        }
+
+        .today-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: opacity 0.15s;
+            min-height: 32px;
+        }
+
+        .today-btn:hover {
+            opacity: 0.85;
+        }
+
+        .today-btn.hidden {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Hidden date input for picking */
+        #date-picker-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            width: 1px;
+            height: 1px;
+        }
+
+        /* Tab content */
+        .tab-content {
+            display: none;
+            padding: 16px;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        /* Event cards */
+        .event-card {
+            display: flex;
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .event-color-bar {
+            width: 5px;
+            flex-shrink: 0;
+        }
+
+        .event-body {
+            flex: 1;
+            padding: 12px 14px;
+            min-width: 0;
+        }
+
+        .event-time {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .event-show {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .event-location {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+
+        .event-cast {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+
+        .event-notes {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        .event-badges {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .badge-revised {
+            background: #FFE0EF;
+            color: var(--accent);
+        }
+
+        .badge-fitting {
+            background: #F5E6F0;
+            color: #9C4078;
+        }
+
+        /* Fitting strip — groups fittings into a compact row */
+        .fitting-strip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            background: linear-gradient(135deg, #faf0f5 0%, #f5e6f0 100%);
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid #C478A8;
+        }
+
+        .fitting-strip-icon {
+            font-size: 11px;
+            font-weight: 700;
+            color: #9C4078;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 2px;
+            white-space: nowrap;
+        }
+
+        .fitting-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: white;
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            box-shadow: 0 1px 3px rgba(74, 25, 66, 0.08);
+        }
+
+        .fitting-pill-time {
+            font-size: 10px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Section headers */
+        .section-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 16px 0 8px;
+        }
+
+        .section-header:first-child {
+            padding-top: 0;
+        }
+
+        /* Empty state */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .empty-state-icon {
+            color: #E0C8DC;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Loading state */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            gap: 12px;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-state p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Error state */
+        .error-state {
+            background: #FFF0F0;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            color: #C0392B;
+            font-size: 14px;
+        }
+
+        /* Casting page */
+        .show-pills {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .show-pills::-webkit-scrollbar { display: none; }
+
+        .show-pill {
+            background: var(--card);
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s;
+            min-height: 36px;
+        }
+
+        .show-pill.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .dancer-row {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #FAF0F8;
+            gap: 10px;
+        }
+
+        .dancer-row:last-child {
+            border-bottom: none;
+        }
+
+        .dancer-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dancer-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .dancer-covers {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .role-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .role-cast { background: #E8F5E9; color: #388E3C; }
+        .role-cover { background: #E3F2FD; color: #1565C0; }
+        .role-cover2 { background: #F3E5F5; color: #7B1FA2; }
+
+        /* Season page */
+        .season-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .week-block {
+            background: var(--card);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 10px;
+            display: flex;
+        }
+
+        .week-block.current-week {
+            background: #FFF0F5;
+            outline: 2px solid var(--accent);
+        }
+
+        .week-type-bar {
+            width: 5px;
+            flex-shrink: 0;
+        }
+
+        .week-body {
+            flex: 1;
+            padding: 12px 14px;
+        }
+
+        .week-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
+        .week-dates {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .week-type-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: capitalize;
+        }
+
+        .week-badge-rehearsal { background: #E8F5E9; color: #388E3C; }
+        .week-badge-tech { background: #E3F2FD; color: #1565C0; }
+        .week-badge-performance { background: #FFF8E1; color: #F57F17; }
+        .week-badge-dark { background: #F5F5F5; color: #757575; }
+        .week-badge-maintenance { background: #FFF3E0; color: #E65100; }
+
+        .this-week-badge {
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+
+        .week-production {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .week-notes {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Coming soon (month tab) */
+        .coming-soon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+            gap: 16px;
+        }
+
+        .coming-soon-icon {
+            color: #D0C0D0;
+        }
+
+        .coming-soon h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .coming-soon p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 260px;
+            line-height: 1.5;
+        }
+
+        /* Calendar subscribe footer */
+        .cal-subscribe {
+            padding: 16px 20px 0;
+            margin-bottom: 0;
+        }
+        .cal-subscribe-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .cal-subscribe-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .cal-subscribe-text svg {
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+        .cal-subscribe-buttons {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .cal-sub-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .cal-sub-btn:hover {
+            border-color: var(--accent);
+            background: color-mix(in srgb, var(--accent) 8%, var(--card));
+        }
+        .cal-sub-btn:active {
+            transform: scale(0.96);
+        }
+        .cal-sub-status {
+            font-size: 11px;
+            color: var(--accent);
+            text-align: center;
+            margin: 6px 0 0;
+            min-height: 16px;
+        }
+        .cal-sub-status:empty {
+            display: none;
+        }
+
+        /* Bottom tab bar */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: calc(60px + env(safe-area-inset-bottom, 0px));
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            display: flex;
+            z-index: 200;
+        }
+
+        .tab-bar-inner {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            width: 100%;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        .tab-bar-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            cursor: pointer;
+            color: var(--tab-inactive);
+            background: none;
+            border: none;
+            font-family: 'Nunito', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 8px 0;
+            transition: color 0.15s;
+            min-height: 44px;
+        }
+
+        .tab-bar-item.active {
+            color: var(--accent);
+        }
+
+        .tab-bar-item svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Casting piece cards - each section gets its own card */
+        .casting-piece-card {
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 0;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .casting-piece-header {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 14px 16px 10px;
+            background: color-mix(in srgb, var(--accent) 6%, var(--card));
+            border-bottom: 1.5px solid var(--border);
+        }
+
+        .casting-piece-card .dancer-row {
+            padding: 10px 16px;
+            border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+        }
+
+        .casting-piece-card .dancer-row:last-child {
+            border-bottom: none;
+        }
+
+        .casting-covers-divider {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 16px 4px;
+            opacity: 0.7;
+            border-top: 1px dashed var(--border);
+            margin-top: 2px;
+        }
+
+        .dancer-row-cover {
+            background: color-mix(in srgb, var(--border) 15%, transparent);
+        }
+
+        .dancer-row-cover .dancer-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Install app banner — matches cal-subscribe style */
+        .install-banner {
+            padding: 10px 20px 0;
+            margin-bottom: 6px;
+        }
+        .install-banner-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .install-banner-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .install-banner-text svg {
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+        .install-banner-buttons {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            align-items: center;
+        }
+        .install-banner-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .install-banner-btn:hover {
+            border-color: var(--accent);
+            background: color-mix(in srgb, var(--accent) 8%, var(--card));
+        }
+        .install-banner-btn:active {
+            transform: scale(0.96);
+        }
+        .install-banner-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0 4px;
+            line-height: 1;
+            opacity: 0.5;
+        }
+
+        /* Suggestions box */
+        .suggestions-row {
+            padding: 6px 20px 0;
+            margin-bottom: 70px;
+        }
+        .suggestions-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .suggestions-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .suggestions-text svg {
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+        .suggestions-send-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .suggestions-send-btn:hover {
+            border-color: var(--accent);
+            background: color-mix(in srgb, var(--accent) 8%, var(--card));
+        }
+        .suggestions-form {
+            padding: 12px 0 0;
+        }
+        .suggestions-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            color: var(--text);
+            background: var(--card);
+            resize: vertical;
+            min-height: 80px;
+            box-sizing: border-box;
+        }
+        .suggestions-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .suggestions-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+        .suggestions-counter {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .suggestions-submit {
+            padding: 8px 18px;
+            border-radius: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+        }
+        .suggestions-submit:active {
+            transform: scale(0.96);
+        }
+        .suggestions-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .suggestions-status {
+            font-size: 12px;
+            margin-top: 8px;
+            text-align: center;
+            min-height: 18px;
+        }
+        .suggestions-status:empty {
+            display: none;
+        }
+
+        /* Page subtitles */
+        .page-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        /* Settings button */
+        .settings-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            transition: background 0.15s, color 0.15s;
+            flex-shrink: 0;
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .settings-btn:hover, .settings-btn:active {
+            background: var(--bg);
+            color: var(--accent);
+        }
+
+        /* Settings panel */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: var(--card);
+            box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+            z-index: 500;
+            padding: 20px;
+            transition: right 0.25s ease;
+            overflow-y: auto;
+        }
+
+        .settings-panel.open {
+            right: 0;
+        }
+
+        .settings-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 499;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s;
+        }
+
+        .settings-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .settings-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .settings-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .settings-close:hover {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .settings-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .settings-toggle:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-icon {
+            font-size: 18px;
+        }
+
+        .toggle-input {
+            display: none;
+        }
+
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: #D0C0D0;
+            border-radius: 12px;
+            position: relative;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .toggle-input:checked + .toggle-switch {
+            background: var(--accent);
+        }
+
+        .toggle-input:checked + .toggle-switch::after {
+            transform: translateX(20px);
+        }
+
+        /* =============== DARK MODE =============== */
+        body.mode-dark {
+            --bg: #1a1a2e;
+            --card: #252545;
+            --text: #E8E4EC;
+            --text-secondary: #A8A0B4;
+            --accent: #FF6EB4;
+            --tab-inactive: #6B5F78;
+            --border: #3A3558;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        body.mode-dark .badge-revised {
+            background: rgba(255, 110, 180, 0.2);
+            color: #FF6EB4;
+        }
+
+        body.mode-dark .fitting-strip {
+            background: linear-gradient(135deg, #352548 0%, #402E58 100%);
+            border-left-color: #B878A8;
+        }
+
+        body.mode-dark .fitting-strip-icon {
+            color: #D8B0CC;
+        }
+
+        body.mode-dark .fitting-pill {
+            background: rgba(200, 120, 168, 0.2);
+            border: 1px solid rgba(200, 120, 168, 0.3);
+            color: #E0D0DC;
+            box-shadow: none;
+        }
+
+        body.mode-dark .fitting-pill-time {
+            color: #B098B0;
+        }
+
+        body.mode-dark .role-cast { background: #1B3A1F; color: #66BB6A; }
+        body.mode-dark .role-cover { background: #1A2D40; color: #64B5F6; }
+        body.mode-dark .role-cover2 { background: #2A1A35; color: #BA68C8; }
+
+        body.mode-dark .week-block.current-week {
+            background: #2A2548;
+            outline-color: #FF6EB4;
+        }
+
+        body.mode-dark .week-badge-rehearsal { background: #1B3A1F; color: #66BB6A; }
+        body.mode-dark .week-badge-tech { background: #1A2D40; color: #64B5F6; }
+        body.mode-dark .week-badge-performance { background: #3A3018; color: #FFD54F; }
+        body.mode-dark .week-badge-dark { background: #2A2A2A; color: #999; }
+        body.mode-dark .week-badge-maintenance { background: #3A2818; color: #FFB74D; }
+
+        body.mode-dark .dancer-row { border-bottom-color: #3A3558; }
+
+        body.mode-dark .casting-piece-header {
+            background: color-mix(in srgb, var(--accent) 10%, var(--card));
+        }
+        body.mode-dark .dancer-row-cover {
+            background: rgba(255,255,255,0.03);
+        }
+        body.mode-dark .casting-piece-card .dancer-row {
+            border-bottom-color: rgba(255,255,255,0.06);
+        }
+
+        body.mode-dark .show-pill {
+            background: var(--card);
+            border-color: var(--border);
+            color: var(--text-secondary);
+        }
+
+        body.mode-dark .show-pill.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        body.mode-dark .error-state {
+            background: #3A1A1A;
+            color: #FF8A80;
+        }
+
+        body.mode-dark .empty-state-icon,
+        body.mode-dark .coming-soon-icon { color: #4A4068; }
+
+        body.mode-dark .today-btn {
+            background: var(--accent);
+        }
+
+        /* =============== FANCY MODE =============== */
+        /* ~*~ manic pixie dream girl energy ~*~ */
+
+        body.mode-fancy {
+            --bg: #FFF0FB;
+            --card: rgba(255, 255, 255, 0.7);
+            --accent: #FF69B4;
+            background: #ffeef8;
+            min-height: 100vh;
+        }
+
+        /* Animated blob background (GPU-composited) */
+        body:not(.mode-fancy) .mesh-bg { display: none; }
+
+        body.mode-fancy .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            background: #ffeef8;
+        }
+
+        body.mode-fancy .mesh-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+            opacity: 0.5;
+        }
+
+        body.mode-fancy .mesh-blob:nth-child(1) {
+            width: 60vw; height: 60vw;
+            background: #ffd6f0;
+            top: -10%; left: -10%;
+            animation: blobMove1 20s ease-in-out infinite;
+        }
+        body.mode-fancy .mesh-blob:nth-child(2) {
+            width: 50vw; height: 50vw;
+            background: #d6e4ff;
+            top: -5%; right: -10%;
+            animation: blobMove2 25s ease-in-out infinite;
+        }
+        body.mode-fancy .mesh-blob:nth-child(3) {
+            width: 55vw; height: 55vw;
+            background: #e8d6ff;
+            bottom: -10%; left: 20%;
+            animation: blobMove3 22s ease-in-out infinite;
+        }
+        body.mode-fancy .mesh-blob:nth-child(4) {
+            width: 45vw; height: 45vw;
+            background: #d6fff0;
+            bottom: 10%; right: -5%;
+            animation: blobMove4 18s ease-in-out infinite;
+        }
+
+        @keyframes blobMove1 {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            33%      { transform: translate3d(10vw, 5vh, 0) scale(1.1); }
+            66%      { transform: translate3d(-5vw, 10vh, 0) scale(0.9); }
+        }
+        @keyframes blobMove2 {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            33%      { transform: translate3d(-8vw, 8vh, 0) scale(1.15); }
+            66%      { transform: translate3d(5vw, -5vh, 0) scale(0.95); }
+        }
+        @keyframes blobMove3 {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+            33%      { transform: translate3d(12vw, -8vh, 0) scale(0.9); }
+            66%      { transform: translate3d(-8vw, -3vh, 0) scale(1.1); }
+        }
+        @keyframes blobMove4 {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            50%      { transform: translate3d(-10vw, 5vh, 0) scale(1.2); }
+        }
+
+        /* Sparkle field overlay */
+        body.mode-fancy::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: transparent;
+            animation: sparkleField 4s linear infinite;
+            box-shadow:
+                10vw 15vh 0 1px rgba(255, 182, 243, 0.8),
+                25vw 30vh 0 0.5px rgba(182, 212, 255, 0.7),
+                40vw 10vh 0 1px rgba(255, 255, 255, 0.9),
+                55vw 45vh 0 0.5px rgba(212, 182, 255, 0.8),
+                70vw 25vh 0 1px rgba(255, 224, 247, 0.7),
+                85vw 60vh 0 0.5px rgba(182, 255, 234, 0.6),
+                15vw 70vh 0 1px rgba(255, 255, 255, 0.8),
+                35vw 85vh 0 0.5px rgba(255, 182, 182, 0.7),
+                60vw 75vh 0 1px rgba(232, 182, 255, 0.8),
+                80vw 90vh 0 0.5px rgba(255, 214, 240, 0.9),
+                5vw 50vh 0 1px rgba(182, 224, 255, 0.7),
+                92vw 40vh 0 0.5px rgba(255, 255, 255, 0.8),
+                48vw 55vh 0 1px rgba(255, 182, 243, 0.6),
+                73vw 12vh 0 0.5px rgba(212, 182, 255, 0.9),
+                20vw 92vh 0 1px rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes sparkleField {
+            0%, 100% { opacity: 0.3; }
+            25%      { opacity: 1; }
+            50%      { opacity: 0.4; }
+            75%      { opacity: 0.9; }
+        }
+
+        /* Light leak overlay */
+        body.mode-fancy::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.12;
+            mix-blend-mode: screen;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(255, 110, 199, 0.6), transparent 60%),
+                radial-gradient(ellipse at 80% 30%, rgba(123, 104, 238, 0.4), transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(255, 215, 0, 0.3), transparent 40%);
+            animation: lightLeakDrift 15s ease-in-out infinite;
+        }
+
+        @keyframes lightLeakDrift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33%      { transform: translate(5%, -3%) scale(1.1); }
+            66%      { transform: translate(-3%, 5%) scale(0.95); }
+        }
+
+        body.mode-fancy .app-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glassmorphism header */
+        body.mode-fancy .app-header {
+            background: rgba(255, 240, 251, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 182, 217, 0.3);
+            box-shadow: 0 4px 30px rgba(199, 125, 255, 0.08);
+        }
+
+        /* Animated rainbow gradient title */
+        body.mode-fancy .app-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            background: linear-gradient(
+                90deg,
+                #ff6b9d, #c44dff, #6ec6ff, #44ffb1, #ffe66d, #ff6b9d, #c44dff, #6ec6ff
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbowSlide 4s linear infinite;
+            filter: drop-shadow(0 0 8px rgba(255, 110, 199, 0.3));
+        }
+
+        @keyframes rainbowSlide {
+            0%   { background-position-x: 0%; }
+            100% { background-position-x: 200%; }
+        }
+
+        /* Glassmorphism event cards with rainbow border */
+        body.mode-fancy .event-card {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow:
+                0 8px 32px rgba(180, 100, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body.mode-fancy .event-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow:
+                0 12px 40px rgba(255, 110, 199, 0.15),
+                0 0 20px rgba(199, 125, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            border-color: rgba(255, 182, 243, 0.4);
+        }
+
+        /* Rainbow color bar */
+        body.mode-fancy .event-color-bar {
+            width: 6px;
+            background: linear-gradient(180deg, #FF69B4, #C77DFF, #69B4FF, #44FFB1) !important;
+            border-radius: 6px 0 0 6px;
+        }
+
+        /* Gradient show names in italic serif */
+        body.mode-fancy .event-show {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 18px;
+            background: linear-gradient(135deg, #C77DFF, #FF69B4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Pulsing revised badges */
+        body.mode-fancy .badge-revised {
+            background: linear-gradient(135deg, #FFE0F0, #F0E0FF);
+            color: #C77DFF;
+            border: 1px solid rgba(199, 125, 255, 0.3);
+            animation: fancyPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes fancyPulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(199, 125, 255, 0.3); }
+            50% { opacity: 0.85; box-shadow: 0 0 12px 4px rgba(199, 125, 255, 0.15); }
+        }
+
+        /* Dreamy fitting strips with shimmer */
+        body.mode-fancy .fitting-strip {
+            background: rgba(255, 240, 251, 0.85);
+            border-left: 4px solid #C77DFF;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(199, 125, 255, 0.2);
+            border-left: 4px solid #C77DFF;
+        }
+
+        body.mode-fancy .fitting-strip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 182, 243, 0.15),
+                rgba(199, 125, 255, 0.1),
+                transparent
+            );
+            animation: shimmerSlide 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmerSlide {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        body.mode-fancy .fitting-strip-icon {
+            color: #C77DFF;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.mode-fancy .fitting-pill {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(199, 125, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(199, 125, 255, 0.1);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.2s ease;
+        }
+
+        body.mode-fancy .fitting-pill:hover {
+            transform: scale(1.05);
+        }
+
+        /* Fancy date display */
+        body.mode-fancy .date-display {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+        }
+
+        /* Gradient buttons */
+        body.mode-fancy .today-btn {
+            background: linear-gradient(135deg, #FF69B4, #C77DFF);
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body.mode-fancy .today-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+        }
+
+        /* Glassmorphism tab bar */
+        body.mode-fancy .tab-bar {
+            background: rgba(255, 240, 251, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 182, 217, 0.3);
+        }
+
+        body.mode-fancy .tab-bar-item.active {
+            color: #C77DFF;
+        }
+
+        /* Bouncy active tab */
+        body.mode-fancy .tab-bar-item:active {
+            transform: scale(0.9);
+            transition: transform 0.1s;
+        }
+
+        /* Fancy show pills */
+        body.mode-fancy .show-pill {
+            border-color: rgba(199, 125, 255, 0.3);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        body.mode-fancy .show-pill:hover {
+            border-color: #C77DFF;
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 4px 12px rgba(199, 125, 255, 0.15);
+        }
+
+        body.mode-fancy .show-pill.active {
+            background: linear-gradient(135deg, #FF69B4, #C77DFF);
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        /* Glassmorphism week blocks */
+        body.mode-fancy .week-block {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(180, 100, 255, 0.08);
+        }
+
+        body.mode-fancy .week-block.current-week {
+            background: rgba(255, 240, 251, 0.7);
+            outline: 2px solid #C77DFF;
+            box-shadow: 0 4px 20px rgba(199, 125, 255, 0.2);
+        }
+
+        body.mode-fancy .season-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 26px;
+            background: linear-gradient(135deg, #FF69B4, #C77DFF, #69B4FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.mode-fancy .casting-piece-card {
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(255,182,193,0.3);
+        }
+        body.mode-fancy .casting-piece-header {
+            background: rgba(255,105,180,0.08);
+        }
+
+        /* Dreamy settings panel */
+        body.mode-fancy .settings-panel {
+            background: linear-gradient(180deg,
+                rgba(255, 245, 251, 0.95),
+                rgba(245, 240, 255, 0.95),
+                rgba(240, 248, 255, 0.95));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* Fancy + Dark combo */
+        body.mode-fancy.mode-dark {
+            background: #0d0a1a;
+        }
+
+        body.mode-fancy.mode-dark .mesh-bg {
+            background: #0d0a1a;
+        }
+
+        body.mode-fancy.mode-dark .mesh-blob:nth-child(1) { background: rgba(255, 110, 199, 0.25); }
+        body.mode-fancy.mode-dark .mesh-blob:nth-child(2) { background: rgba(123, 104, 238, 0.25); }
+        body.mode-fancy.mode-dark .mesh-blob:nth-child(3) { background: rgba(0, 206, 209, 0.2); }
+        body.mode-fancy.mode-dark .mesh-blob:nth-child(4) { background: rgba(255, 215, 0, 0.12); }
+
+        body.mode-fancy.mode-dark::before {
+            box-shadow:
+                10vw 15vh 0 1px rgba(255, 110, 199, 0.6),
+                25vw 30vh 0 0.5px rgba(123, 104, 238, 0.5),
+                40vw 10vh 0 1px rgba(255, 255, 255, 0.4),
+                55vw 45vh 0 0.5px rgba(0, 206, 209, 0.5),
+                70vw 25vh 0 1px rgba(255, 182, 243, 0.4),
+                85vw 60vh 0 0.5px rgba(123, 104, 238, 0.5),
+                15vw 70vh 0 1px rgba(255, 215, 0, 0.3),
+                35vw 85vh 0 0.5px rgba(255, 110, 199, 0.4),
+                60vw 75vh 0 1px rgba(0, 206, 209, 0.4),
+                80vw 90vh 0 0.5px rgba(123, 104, 238, 0.5),
+                48vw 55vh 0 1px rgba(255, 110, 199, 0.3),
+                92vw 40vh 0 0.5px rgba(255, 255, 255, 0.3);
+        }
+
+        body.mode-fancy.mode-dark::after {
+            opacity: 0.08;
+        }
+
+        body.mode-fancy.mode-dark .app-header {
+            background: rgba(13, 10, 26, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        body.mode-fancy.mode-dark .event-card {
+            background: rgba(37, 37, 69, 0.85);
+            border-color: rgba(199, 125, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        body.mode-fancy.mode-dark .event-card:hover {
+            border-color: rgba(255, 110, 199, 0.3);
+            box-shadow: 0 12px 40px rgba(199, 125, 255, 0.15), 0 0 30px rgba(255, 110, 199, 0.05);
+        }
+
+        body.mode-fancy.mode-dark .event-show {
+            background: linear-gradient(135deg, #FF8DC7, #D4A0FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.mode-fancy.mode-dark .week-block {
+            background: rgba(37, 37, 69, 0.85);
+            border-color: rgba(199, 125, 255, 0.1);
+        }
+
+        body.mode-fancy.mode-dark .tab-bar {
+            background: rgba(13, 10, 26, 0.85);
+            backdrop-filter: blur(20px);
+        }
+
+        body.mode-fancy.mode-dark .fitting-strip {
+            background: rgba(42, 24, 56, 0.85);
+            border-left-color: #C77DFF;
+            border-color: rgba(199, 125, 255, 0.2);
+            border-left: 4px solid #C77DFF;
+        }
+
+        body.mode-fancy.mode-dark .fitting-pill {
+            background: rgba(199, 125, 255, 0.15);
+            border-color: rgba(199, 125, 255, 0.25);
+        }
+
+        body.mode-fancy.mode-dark .show-pill {
+            background: rgba(37, 37, 69, 0.5);
+            border-color: rgba(199, 125, 255, 0.2);
+        }
+
+        body.mode-fancy.mode-dark .casting-piece-card {
+            background: rgba(30,20,40,0.7);
+            border-color: rgba(255,105,180,0.15);
+        }
+
+        body.mode-fancy.mode-dark .settings-panel {
+            background: linear-gradient(180deg,
+                rgba(26, 16, 40, 0.95),
+                rgba(21, 21, 48, 0.95),
+                rgba(15, 26, 42, 0.95));
+            backdrop-filter: blur(20px);
+        }
+
+        /* Staggered card entrance animation */
+        body.mode-fancy .event-card,
+        body.mode-fancy .fitting-strip {
+            animation: cardPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+        }
+
+        body.mode-fancy .event-card:nth-child(1),
+        body.mode-fancy .fitting-strip:nth-child(1) { animation-delay: 0ms; }
+        body.mode-fancy .event-card:nth-child(2),
+        body.mode-fancy .fitting-strip:nth-child(2) { animation-delay: 80ms; }
+        body.mode-fancy .event-card:nth-child(3),
+        body.mode-fancy .fitting-strip:nth-child(3) { animation-delay: 160ms; }
+        body.mode-fancy .event-card:nth-child(4),
+        body.mode-fancy .fitting-strip:nth-child(4) { animation-delay: 240ms; }
+        body.mode-fancy .event-card:nth-child(5),
+        body.mode-fancy .fitting-strip:nth-child(5) { animation-delay: 320ms; }
+        body.mode-fancy .event-card:nth-child(6),
+        body.mode-fancy .fitting-strip:nth-child(6) { animation-delay: 400ms; }
+        body.mode-fancy .event-card:nth-child(7),
+        body.mode-fancy .fitting-strip:nth-child(7) { animation-delay: 480ms; }
+        body.mode-fancy .event-card:nth-child(8),
+        body.mode-fancy .fitting-strip:nth-child(8) { animation-delay: 560ms; }
+        body.mode-fancy .event-card:nth-child(9),
+        body.mode-fancy .fitting-strip:nth-child(9) { animation-delay: 640ms; }
+        body.mode-fancy .event-card:nth-child(10),
+        body.mode-fancy .fitting-strip:nth-child(10) { animation-delay: 720ms; }
+
+        @keyframes cardPopIn {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Falling cherry blossom petals */
+        body.mode-fancy .petal-field {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        body:not(.mode-fancy) .petal-field { display: none; }
+
+        body.mode-fancy .petal {
+            position: absolute;
+            top: -20px;
+            width: 10px;
+            height: 12px;
+            background: radial-gradient(ellipse, rgba(255, 182, 193, 0.7) 0%, rgba(255, 105, 180, 0.4) 50%, transparent 70%);
+            border-radius: 50% 0 50% 50%;
+            opacity: 0;
+            will-change: transform;
+            animation: petalFall var(--dur, 10s) var(--del, 0s) linear infinite;
+        }
+
+        body.mode-fancy .petal:nth-child(1) { left: 5%;  --dur: 11s; --del: 0s; --drift: 40px; --spin: 400deg; }
+        body.mode-fancy .petal:nth-child(2) { left: 18%; --dur: 14s; --del: 3s; --drift: -35px; --spin: -300deg; }
+        body.mode-fancy .petal:nth-child(3) { left: 30%; --dur: 9s;  --del: 5s; --drift: 50px; --spin: 350deg; }
+        body.mode-fancy .petal:nth-child(4) { left: 42%; --dur: 12s; --del: 1.5s; --drift: -40px; --spin: -380deg; }
+        body.mode-fancy .petal:nth-child(5) { left: 55%; --dur: 15s; --del: 4s; --drift: 30px; --spin: 320deg; }
+        body.mode-fancy .petal:nth-child(6) { left: 68%; --dur: 10s; --del: 6s; --drift: -50px; --spin: -350deg; }
+        body.mode-fancy .petal:nth-child(7) { left: 80%; --dur: 13s; --del: 2s; --drift: 45px; --spin: 380deg; }
+        body.mode-fancy .petal:nth-child(8) { left: 92%; --dur: 11s; --del: 7s; --drift: -30px; --spin: -300deg; }
+
+        @keyframes petalFall {
+            0% { transform: translateY(-5vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(105vh) translateX(var(--drift, 30px)) rotate(var(--spin, 360deg)); opacity: 0; }
+        }
+
+        /* Touch sparkle trail */
+        .sparkle-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            background: radial-gradient(circle, #fff 0%, #ff69b4 40%, transparent 70%);
+            animation: sparkleTrailFade 0.6s ease-out forwards;
+            will-change: transform, opacity;
+        }
+
+        @keyframes sparkleTrailFade {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: scale(0) rotate(180deg); opacity: 0; }
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            body.mode-fancy,
+            body.mode-fancy *,
+            body.mode-fancy *::before,
+            body.mode-fancy *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* =============== DYSLEXIA-FRIENDLY MODE =============== */
+        /* Based on BDA Style Guide, WCAG 1.4.12, Lexend readability research */
+
+        body.mode-dyslexia {
+            font-family: 'Lexend', 'Atkinson Hyperlegible', Verdana, sans-serif;
+            font-size: 18px;
+            letter-spacing: 0.05em;
+            word-spacing: 0.16em;
+            line-height: 2.0;
+            font-variant-ligatures: none;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            /* Warm cream background — research shows warm tones outperform white */
+            --bg: #FDF6E3;
+            --card: #FFFFFF;
+            --text: #2D3436;
+            --text-secondary: #4A5568;
+            --border: #E2D8C8;
+        }
+
+        /* Force left-align, never justify — rivers of whitespace are disorienting */
+        body.mode-dyslexia * {
+            text-align: left !important;
+        }
+
+        /* Kill all italic — jagged letterforms blur together for dyslexic readers */
+        body.mode-dyslexia em,
+        body.mode-dyslexia i,
+        body.mode-dyslexia .event-notes {
+            font-style: normal !important;
+            font-weight: 600;
+        }
+
+        /* Kill animations — reduces cognitive load per Frontiers in Human Neuroscience */
+        body.mode-dyslexia *,
+        body.mode-dyslexia *::before,
+        body.mode-dyslexia *::after {
+            animation: none !important;
+            transition: none !important;
+        }
+
+        body.mode-dyslexia .event-show {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            /* Override any fancy mode italic/serif */
+            font-family: 'Lexend', 'Atkinson Hyperlegible', Verdana, sans-serif !important;
+            font-style: normal !important;
+            -webkit-text-fill-color: var(--text) !important;
+            background: none !important;
+        }
+
+        body.mode-dyslexia .event-time {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: none;
+        }
+
+        body.mode-dyslexia .event-location,
+        body.mode-dyslexia .event-cast,
+        body.mode-dyslexia .event-notes {
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        body.mode-dyslexia .event-card {
+            margin-bottom: 14px;
+            /* Override any fancy mode effects */
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background: var(--card) !important;
+            border: 1px solid var(--border) !important;
+        }
+
+        body.mode-dyslexia .event-body {
+            padding: 14px 16px;
+        }
+
+        body.mode-dyslexia .date-display {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        body.mode-dyslexia .dancer-name {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        body.mode-dyslexia .dancer-row {
+            padding: 12px 0;
+        }
+
+        body.mode-dyslexia .fitting-pill {
+            font-size: 15px;
+            font-weight: 600;
+            padding: 5px 14px;
+            letter-spacing: 0.03em;
+        }
+
+        body.mode-dyslexia .fitting-pill-time {
+            font-size: 13px;
+        }
+
+        body.mode-dyslexia .fitting-strip {
+            /* Override any fancy shimmer */
+            backdrop-filter: none !important;
+            background: #FDF6E3 !important;
+            border: 1px solid var(--border) !important;
+            border-left: 4px solid #9C4078 !important;
+        }
+
+        body.mode-dyslexia .fitting-strip::before {
+            display: none !important;
+        }
+
+        body.mode-dyslexia .tab-bar-item {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        body.mode-dyslexia .badge,
+        body.mode-dyslexia .week-type-badge,
+        body.mode-dyslexia .this-week-badge,
+        body.mode-dyslexia .role-badge {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: none;
+        }
+
+        body.mode-dyslexia .section-header,
+        body.mode-dyslexia .casting-piece-header,
+        body.mode-dyslexia .casting-covers-divider,
+        body.mode-dyslexia .fitting-strip-icon {
+            text-transform: none;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        body.mode-dyslexia .app-title {
+            font-family: 'Lexend', sans-serif !important;
+            font-style: normal !important;
+            -webkit-text-fill-color: var(--text) !important;
+            background: none !important;
+            filter: none !important;
+        }
+
+        body.mode-dyslexia .settings-title,
+        body.mode-dyslexia .toggle-label {
+            letter-spacing: 0.03em;
+            font-weight: 700;
+        }
+
+        body.mode-dyslexia .show-pill {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        body.mode-dyslexia .season-title {
+            font-family: 'Lexend', sans-serif !important;
+            font-style: normal !important;
+            -webkit-text-fill-color: var(--text) !important;
+            background: none !important;
+        }
+
+        body.mode-dyslexia .week-dates,
+        body.mode-dyslexia .week-production {
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        body.mode-dyslexia .week-notes {
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* Dyslexia + Dark mode combo — keep warm tones with dark bg */
+        body.mode-dyslexia.mode-dark {
+            --bg: #1a1a12;
+            --card: #2a2a20;
+            --text: #E8E4D6;
+            --text-secondary: #B0A898;
+            --border: #3A3828;
+        }
+
+        /* =============== NO FITTINGS MODE =============== */
+        body.mode-no-fittings .fitting-strip {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fancy mode: animated mesh blob background -->
+    <div class="mesh-bg" id="mesh-bg">
+        <div class="mesh-blob"></div>
+        <div class="mesh-blob"></div>
+        <div class="mesh-blob"></div>
+        <div class="mesh-blob"></div>
+    </div>
+    <div class="app-container">
+
+        <!-- Header (shown for daily tab only via JS) -->
+        <div class="app-header" id="app-header">
+            <div class="app-header-top">
+                <span class="app-title">NBT Schedule</span>
+                <button class="settings-btn" id="settings-btn" aria-label="Display settings">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="10" cy="10" r="2.5"/>
+                        <path d="M10 1.5v2M10 16.5v2M3.1 3.1l1.4 1.4M15.5 15.5l1.4 1.4M1.5 10h2M16.5 10h2M3.1 16.9l1.4-1.4M15.5 4.5l1.4-1.4"/>
+                    </svg>
+                    <span class="settings-btn-label">Display</span>
+                </button>
+            </div>
+
+            <!-- Date navigation (daily tab only) -->
+            <div class="date-nav" id="date-nav">
+                <button class="date-nav-btn" id="prev-day-btn" aria-label="Previous day">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 5L7 10L12 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <span class="date-display" id="date-display" tabindex="0" role="button" aria-label="Select date"></span>
+                <button class="date-nav-btn" id="next-day-btn" aria-label="Next day">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M8 5L13 10L8 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="today-btn hidden" id="today-btn">Today</button>
+            </div>
+            <!-- Hidden date picker -->
+            <input type="date" id="date-picker-input" aria-hidden="true" tabindex="-1">
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="settings-panel" id="settings-panel">
+            <div class="settings-header">
+                <span class="settings-title">Display Settings</span>
+                <button class="settings-close" id="settings-close" aria-label="Close settings">&times;</button>
+            </div>
+            <label class="settings-toggle">
+                <span class="toggle-label">
+                    <span class="toggle-icon">&#x1F319;</span> Dark Mode
+                </span>
+                <input type="checkbox" id="toggle-dark" class="toggle-input">
+                <span class="toggle-switch"></span>
+            </label>
+            <label class="settings-toggle">
+                <span class="toggle-label">
+                    <span class="toggle-icon">&#x2728;</span> Fancy Mode
+                </span>
+                <input type="checkbox" id="toggle-fancy" class="toggle-input">
+                <span class="toggle-switch"></span>
+            </label>
+            <label class="settings-toggle">
+                <span class="toggle-label">
+                    <span class="toggle-icon">&#x1F453;</span> Dyslexia-Friendly
+                </span>
+                <input type="checkbox" id="toggle-dyslexia" class="toggle-input">
+                <span class="toggle-switch"></span>
+            </label>
+            <label class="settings-toggle">
+                <span class="toggle-label">
+                    <span class="toggle-icon">&#x1F6AB;</span> Hide Fittings
+                </span>
+                <input type="checkbox" id="toggle-no-fittings" class="toggle-input">
+                <span class="toggle-switch"></span>
+            </label>
+            <label class="settings-toggle">
+                <span class="toggle-label">
+                    <span class="toggle-icon">&#x1F1EA;&#x1F1F8;</span> Español
+                </span>
+                <input type="checkbox" id="toggle-spanish" class="toggle-input">
+                <span class="toggle-switch"></span>
+            </label>
+            <label class="settings-toggle">
+                <span class="toggle-label">
+                    <span class="toggle-icon">&#x1F1E7;&#x1F1F7;</span> Português
+                </span>
+                <input type="checkbox" id="toggle-portuguese" class="toggle-input">
+                <span class="toggle-switch"></span>
+            </label>
+        </div>
+        <div class="settings-backdrop" id="settings-backdrop"></div>
+
+        <!-- Fancy mode: falling petals -->
+        <div class="petal-field" id="petal-field">
+            <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+            <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+            <div class="petal"></div><div class="petal"></div>
+        </div>
+
+        <!-- Tab: Daily Schedule -->
+        <div class="tab-content active" id="tab-daily">
+            <div id="schedule-content"></div>
+        </div>
+
+        <!-- Tab: Casting -->
+        <div class="tab-content" id="tab-casting">
+            <div class="show-pills" id="show-pills"></div>
+            <div id="casting-content"></div>
+        </div>
+
+        <!-- Tab: Season -->
+        <div class="tab-content" id="tab-season">
+            <div id="season-content"></div>
+        </div>
+
+        <!-- Tab: Month (Coming Soon) -->
+        <div class="tab-content" id="tab-month">
+            <div class="coming-soon">
+                <svg class="coming-soon-icon" width="80" height="80" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                    <rect x="12" y="18" width="56" height="50" rx="8" stroke="currentColor" stroke-width="3" opacity="0.25"/>
+                    <path d="M12 30h56" stroke="currentColor" stroke-width="3" opacity="0.2"/>
+                    <rect x="26" y="14" width="4" height="10" rx="2" fill="currentColor" opacity="0.25"/>
+                    <rect x="50" y="14" width="4" height="10" rx="2" fill="currentColor" opacity="0.25"/>
+                    <circle cx="40" cy="48" r="8" stroke="currentColor" stroke-width="2.5" opacity="0.2"/>
+                    <path d="M40 43v6l4 3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.25"/>
+                </svg>
+                <h2>Coming Soon</h2>
+                <p>Month-at-a-glance view coming when monthly schedules are available.</p>
+            </div>
+        </div>
+
+        <!-- Calendar Subscribe -->
+        <div class="cal-subscribe" id="cal-subscribe-footer">
+            <div class="cal-subscribe-inner">
+                <div class="cal-subscribe-text">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/><path d="M8 2v4M16 2v4"/></svg>
+                    <span>Add schedule to your calendar</span>
+                </div>
+                <div class="cal-subscribe-buttons">
+                    <button class="cal-sub-btn" id="btn-gcal-footer" aria-label="Subscribe via Google Calendar">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/><path d="M8 2v4M16 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="8" cy="15" r="1.5" fill="#4285F4"/><circle cx="12" cy="15" r="1.5" fill="#EA4335"/><circle cx="16" cy="15" r="1.5" fill="#34A853"/></svg>
+                        Google
+                    </button>
+                    <button class="cal-sub-btn" id="btn-apple-footer" aria-label="Subscribe via Apple Calendar">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/><path d="M8 2v4M16 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9 15l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Apple
+                    </button>
+                </div>
+            </div>
+            <p class="cal-sub-status" id="cal-sub-status-footer"></p>
+        </div>
+
+        <!-- Install app banner -->
+        <div class="install-banner" id="install-banner">
+            <div class="install-banner-inner">
+                <div class="install-banner-text">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/><rect x="3" y="19" width="18" height="2" rx="1"/></svg>
+                    <span>Add to Home Screen</span>
+                </div>
+                <div class="install-banner-buttons">
+                    <button class="install-banner-btn" id="install-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Install
+                    </button>
+                    <button class="install-banner-close" id="install-close" aria-label="Dismiss">&times;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="suggestions-row" id="suggestions-row">
+            <div class="suggestions-header" id="suggestions-toggle">
+                <div class="suggestions-text">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                    <span>Have a suggestion?</span>
+                </div>
+                <button class="suggestions-send-btn" id="suggestions-open">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    Send
+                </button>
+            </div>
+            <div class="suggestions-form" id="suggestions-form" style="display: none;">
+                <textarea class="suggestions-input" id="suggestions-input" placeholder="What would make this schedule better?" rows="3" maxlength="500"></textarea>
+                <div class="suggestions-actions">
+                    <span class="suggestions-counter" id="suggestions-counter">0/500</span>
+                    <button class="suggestions-submit" id="suggestions-submit">Submit</button>
+                </div>
+                <p class="suggestions-status" id="suggestions-status"></p>
+            </div>
+        </div>
+
+        <!-- Bottom Tab Bar -->
+        <nav class="tab-bar" aria-label="Main navigation">
+            <div class="tab-bar-inner">
+                <button class="tab-bar-item active" data-tab="daily" onclick="switchTab('daily')" aria-label="Daily schedule">
+                    <!-- Calendar day icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="3"/>
+                        <path d="M16 2v4M8 2v4M3 10h18"/>
+                        <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+                    </svg>
+                    Daily
+                </button>
+                <button class="tab-bar-item" data-tab="casting" onclick="switchTab('casting')" aria-label="Casting">
+                    <!-- People icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="7" r="3"/>
+                        <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+                        <circle cx="18" cy="7" r="2.5"/>
+                        <path d="M21 21v-1.5a3.5 3.5 0 0 0-2-3.17"/>
+                    </svg>
+                    Casting
+                </button>
+                <button class="tab-bar-item" data-tab="season" onclick="switchTab('season')" aria-label="Season">
+                    <!-- Calendar range icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="3"/>
+                        <path d="M16 2v4M8 2v4M3 10h18"/>
+                        <path d="M7 15h4M7 19h8"/>
+                    </svg>
+                    Season
+                </button>
+                <button class="tab-bar-item" data-tab="month" onclick="switchTab('month')" aria-label="Month view">
+                    <!-- Grid icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                    </svg>
+                    Month
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+
+        // =====================
+        // State
+        // =====================
+        let currentTab = 'daily';
+        let currentDate = new Date();
+        let castingData = null;
+        let castingShows = null;
+        let selectedShow = null;
+
+        // =====================
+        // Utilities
+        // =====================
+
+        function padDate(n) {
+            return String(n).padStart(2, '0');
+        }
+
+        function dateToISO(d) {
+            return `${d.getFullYear()}-${padDate(d.getMonth() + 1)}-${padDate(d.getDate())}`;
+        }
+
+        function isToday(d) {
+            const now = new Date();
+            return d.getFullYear() === now.getFullYear() &&
+                   d.getMonth() === now.getMonth() &&
+                   d.getDate() === now.getDate();
+        }
+
+        function formatDisplayDate(d) {
+            return d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+        }
+
+        function formatShortDate(dateStr) {
+            // dateStr: "YYYY-MM-DD"
+            if (!dateStr) return '';
+            const [, mm, dd] = dateStr.split('-').map(Number);
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            return `${months[mm - 1]} ${dd}`;
+        }
+
+        function formatTime(timeStr) {
+            if (!timeStr) return '';
+            const parts = timeStr.split(':').map(Number);
+            const h = parts[0];
+            const m = parts[1];
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const hour = h % 12 || 12;
+            return m === 0 ? `${hour} ${ampm}` : `${hour}:${String(m).padStart(2, '0')} ${ampm}`;
+        }
+
+        function formatTimeRange(start, end) {
+            if (!start) return '';
+            const s = formatTime(start);
+            if (!end) return s;
+            const e = formatTime(end);
+            const sH = parseInt(start.split(':')[0]);
+            const eH = parseInt(end.split(':')[0]);
+            const sAmpm = sH >= 12 ? 'PM' : 'AM';
+            const eAmpm = eH >= 12 ? 'PM' : 'AM';
+            if (sAmpm === eAmpm) {
+                // Remove AM/PM from start
+                return `${s.replace(` ${sAmpm}`, '')} \u2013 ${e}`;
+            }
+            return `${s} \u2013 ${e}`;
+        }
+
+        function formatLocation(studio, staff) {
+            let loc = '';
+            if (studio) {
+                const s = studio.trim();
+                if (s === 'TSC') loc = 'The Smith Center';
+                else if (s === 'Stage') loc = 'The Smith Center \u2013 Main Stage';
+                else if (s === 'Troesh') loc = 'Troesh Studio at TSC';
+                else if (s === 'Wardrobe') loc = 'NBT Wardrobe';
+                else if (/^\d+$/.test(s)) loc = `NBT Studio ${s}`;
+                else loc = s;
+            } else {
+                loc = 'Nevada Ballet Theatre';
+            }
+            if (staff) loc += ` \u00b7 ${staff}`;
+            return loc;
+        }
+
+        function showColor(name) {
+            if (!name) return '#E0D4DE';
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) {
+                hash = name.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const hue = Math.abs(hash) % 360;
+            return `hsl(${hue}, 65%, 75%)`;
+        }
+
+        function escape(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // =====================
+        // Date Navigation
+        // =====================
+
+        function updateDateDisplay() {
+            const display = document.getElementById('date-display');
+            display.textContent = formatDisplayDate(currentDate);
+
+            const todayBtn = document.getElementById('today-btn');
+            if (isToday(currentDate)) {
+                todayBtn.classList.add('hidden');
+            } else {
+                todayBtn.classList.remove('hidden');
+            }
+
+            // Sync hidden date picker value
+            const picker = document.getElementById('date-picker-input');
+            picker.value = dateToISO(currentDate);
+        }
+
+        document.getElementById('prev-day-btn').addEventListener('click', () => {
+            currentDate = new Date(currentDate);
+            currentDate.setDate(currentDate.getDate() - 1);
+            updateDateDisplay();
+            fetchSchedule(currentDate);
+        });
+
+        document.getElementById('next-day-btn').addEventListener('click', () => {
+            currentDate = new Date(currentDate);
+            currentDate.setDate(currentDate.getDate() + 1);
+            updateDateDisplay();
+            fetchSchedule(currentDate);
+        });
+
+        document.getElementById('today-btn').addEventListener('click', () => {
+            currentDate = new Date();
+            updateDateDisplay();
+            fetchSchedule(currentDate);
+        });
+
+        // Tapping date label opens native date picker
+        document.getElementById('date-display').addEventListener('click', () => {
+            document.getElementById('date-picker-input').showPicker
+                ? document.getElementById('date-picker-input').showPicker()
+                : document.getElementById('date-picker-input').click();
+        });
+
+        document.getElementById('date-display').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                document.getElementById('date-picker-input').click();
+            }
+        });
+
+        document.getElementById('date-picker-input').addEventListener('change', (e) => {
+            if (!e.target.value) return;
+            const [y, m, d] = e.target.value.split('-').map(Number);
+            currentDate = new Date(y, m - 1, d);
+            updateDateDisplay();
+            fetchSchedule(currentDate);
+        });
+
+        // =====================
+        // Daily Schedule
+        // =====================
+
+        function renderLoadingState() {
+            return `<div class="loading-state"><div class="spinner"></div><p>Loading schedule\u2026</p></div>`;
+        }
+
+        function renderErrorState(msg) {
+            return `<div class="error-state">${escape(msg)}</div>`;
+        }
+
+        function renderEmptyState() {
+            return `
+                <div class="empty-state">
+                    <svg class="empty-state-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                        <rect x="10" y="14" width="44" height="40" rx="6" stroke="currentColor" stroke-width="2.5" opacity="0.25"/>
+                        <path d="M10 24h44" stroke="currentColor" stroke-width="2.5" opacity="0.2"/>
+                        <rect x="20" y="10" width="3" height="8" rx="1.5" fill="currentColor" opacity="0.25"/>
+                        <rect x="41" y="10" width="3" height="8" rx="1.5" fill="currentColor" opacity="0.25"/>
+                        <path d="M25 36h14M32 32v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.15"/>
+                    </svg>
+                    <h3>${t('noEvents')}</h3>
+                    <p>Nothing scheduled for this date.</p>
+                </div>
+            `;
+        }
+
+        function buildFittingStrip(fittings) {
+            const pills = fittings.map(ev => {
+                const dancer = ev.fitting_dancer || ev.cast_type || 'Fitting';
+                const time = formatTimeRange(ev.time_start, ev.time_end);
+                return `<span class="fitting-pill">${escape(dancer)}<span class="fitting-pill-time">${escape(time)}</span></span>`;
+            }).join('');
+            return `
+                <div class="fitting-strip">
+                    <span class="fitting-strip-icon">${t('fittings')}</span>
+                    ${pills}
+                </div>
+            `;
+        }
+
+        function buildEventCard(ev) {
+            const color = showColor(ev.show);
+            const timeRange = formatTimeRange(ev.time_start, ev.time_end);
+            const location = formatLocation(ev.studio, ev.staff);
+
+            let badges = '';
+            if (ev.is_revised) {
+                badges += `<span class="badge badge-revised">${t('revised')}</span>`;
+            }
+            const badgesHtml = badges ? `<div class="event-badges">${badges}</div>` : '';
+
+            const castHtml = ev.cast_type ? `<div class="event-cast">${escape(ev.cast_type)}</div>` : '';
+            const notesHtml = ev.notes ? `<div class="event-notes">${escape(ev.notes)}</div>` : '';
+
+            return `
+                <div class="event-card">
+                    <div class="event-color-bar" style="background:${color}"></div>
+                    <div class="event-body">
+                        ${timeRange ? `<div class="event-time">${escape(timeRange)}</div>` : ''}
+                        <div class="event-show">${escape(ev.show || 'Rehearsal')}</div>
+                        <div class="event-location">${escape(location)}</div>
+                        ${castHtml}
+                        ${notesHtml}
+                        ${badgesHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        const API_BASE = window.__NBT_API_BASE__ || document.querySelector('meta[name="nbt-api-base"]')?.content || '';
+
+        function apiUrl(path) {
+            return `${API_BASE}${path}`;
+        }
+
+        async function apiFetch(path, init) {
+            return fetch(apiUrl(path), init);
+        }
+
+        function publicOrigin() {
+            return API_BASE ? new URL(API_BASE, window.location.href).origin : window.location.origin;
+        }
+
+        async function fetchSchedule(date) {
+            const content = document.getElementById('schedule-content');
+            content.innerHTML = renderLoadingState();
+
+            const iso = dateToISO(date);
+            try {
+                const resp = await apiFetch(`/public/schedule/date/${iso}`);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const events = await resp.json();
+
+                if (!events || events.length === 0) {
+                    content.innerHTML = renderEmptyState();
+                    return;
+                }
+
+                // Strip redundant fitting cross-reference notes
+                events.forEach(ev => {
+                    if (ev.notes && /^\*\*\s*(Check Fitting|.*fitting\s+\d)/i.test(ev.notes)) {
+                        ev.notes = '';
+                    }
+                });
+
+                // Group consecutive fittings into compact strips
+                let html = '';
+                let fittingBuffer = [];
+                const flushFittings = () => {
+                    if (fittingBuffer.length > 0) {
+                        html += buildFittingStrip(fittingBuffer);
+                        fittingBuffer = [];
+                    }
+                };
+                events.forEach(ev => {
+                    if (ev.event_type === 'fitting') {
+                        fittingBuffer.push(ev);
+                    } else {
+                        flushFittings();
+                        html += buildEventCard(ev);
+                    }
+                });
+                flushFittings();
+
+                content.innerHTML = html;
+            } catch (err) {
+                content.innerHTML = renderErrorState('Failed to load schedule. Please try again.');
+                console.error('Schedule fetch error:', err);
+            }
+        }
+
+        // =====================
+        // Casting
+        // =====================
+
+        function getRoleBadgeClass(role) {
+            if (!role) return 'role-cast';
+            const r = role.toLowerCase();
+            if (r.includes('cover 2') || r.includes('cover2') || r.includes('alt')) return 'role-cover2';
+            if (r.includes('cover')) return 'role-cover';
+            return 'role-cast';
+        }
+
+        function getRoleLabel(role) {
+            if (!role) return 'Cast';
+            const r = role.toLowerCase();
+            if (r.includes('cover 2') || r.includes('cover2')) return 'Cover 2';
+            if (r.includes('cover')) return 'Cover';
+            return 'Cast';
+        }
+
+        function renderCastingForShow(show) {
+            if (!castingData) return '';
+            const entries = castingData.filter(e => e.show === show);
+            if (entries.length === 0) {
+                return `<div class="empty-state"><h3>No Casting Data</h3><p>No casting assignments found for this show.</p></div>`;
+            }
+
+            // Group by section
+            const sections = {};
+            entries.forEach(e => {
+                const key = e.section || 'General Cast';
+                if (!sections[key]) sections[key] = [];
+                sections[key].push(e);
+            });
+
+            const sectionKeys = Object.keys(sections).sort((a, b) => {
+                if (a === 'General Cast') return 1;
+                if (b === 'General Cast') return -1;
+                return a.localeCompare(b);
+            });
+
+            let html = '';
+            sectionKeys.forEach(key => {
+                const dancers = sections[key];
+                const cast = dancers.filter(d => d.role === 'cast' || (!d.role) || (d.role && !d.role.toLowerCase().includes('cover')));
+                const covers = dancers.filter(d => d.role && d.role.toLowerCase().includes('cover'));
+
+                html += `<div class="casting-piece-card">`;
+                html += `<div class="casting-piece-header">${escape(key)}</div>`;
+
+                // Cast section
+                if (cast.length > 0) {
+                    cast.forEach(d => {
+                        html += `
+                            <div class="dancer-row">
+                                <div class="dancer-info">
+                                    <div class="dancer-name">${escape(d.dancer_name)}</div>
+                                </div>
+                                <span class="role-badge role-cast">Cast</span>
+                            </div>`;
+                    });
+                }
+
+                // Covers section (if any)
+                if (covers.length > 0) {
+                    html += `<div class="casting-covers-divider">${t('covers')}</div>`;
+                    covers.forEach(d => {
+                        const roleClass = d.role === 'cover2' ? 'role-cover2' : 'role-cover';
+                        const roleLabel = d.role === 'cover2' ? 'Cover 2' : 'Cover';
+                        const coversHtml = d.cover_for
+                            ? `<div class="dancer-covers">\u2192 ${escape(d.cover_for)}</div>`
+                            : '';
+                        html += `
+                            <div class="dancer-row dancer-row-cover">
+                                <div class="dancer-info">
+                                    <div class="dancer-name">${escape(d.dancer_name)}</div>
+                                    ${coversHtml}
+                                </div>
+                                <span class="role-badge ${roleClass}">${escape(roleLabel)}</span>
+                            </div>`;
+                    });
+                }
+
+                html += `</div>`;
+            });
+
+            return html;
+        }
+
+        async function fetchCasting() {
+            const content = document.getElementById('casting-content');
+            const pillsContainer = document.getElementById('show-pills');
+
+            if (castingData && castingShows) {
+                // Already loaded, just render
+                renderCastingUI();
+                return;
+            }
+
+            pillsContainer.innerHTML = '';
+            content.innerHTML = renderLoadingState();
+
+            try {
+                const [showsResp, dataResp] = await Promise.all([
+                    apiFetch('/public/casting/shows'),
+                    apiFetch('/public/casting')
+                ]);
+                if (!showsResp.ok || !dataResp.ok) throw new Error('HTTP error');
+                castingShows = await showsResp.json();
+                castingData = await dataResp.json();
+
+                if (!castingShows || castingShows.length === 0) {
+                    pillsContainer.innerHTML = '';
+                    content.innerHTML = `<div class="empty-state"><h3>No Casting Data</h3><p>No casting assignments are available yet.</p></div>`;
+                    return;
+                }
+
+                selectedShow = castingShows[0];
+                renderCastingUI();
+            } catch (err) {
+                content.innerHTML = renderErrorState('Failed to load casting. Please try again.');
+                console.error('Casting fetch error:', err);
+            }
+        }
+
+        function renderCastingUI() {
+            const pillsContainer = document.getElementById('show-pills');
+            const content = document.getElementById('casting-content');
+
+            // Render pills
+            pillsContainer.innerHTML = castingShows.map(show => `
+                <button class="show-pill ${show === selectedShow ? 'active' : ''}"
+                        onclick="selectShow(${JSON.stringify(escape(show))})"
+                        data-show="${escape(show)}">
+                    ${escape(show)}
+                </button>
+            `).join('');
+
+            content.innerHTML = renderCastingForShow(selectedShow);
+        }
+
+        function selectShow(show) {
+            // Unescape HTML entities (since we escaped show name in onclick)
+            const tmp = document.createElement('textarea');
+            tmp.innerHTML = show;
+            const rawShow = tmp.value;
+
+            selectedShow = rawShow;
+
+            document.querySelectorAll('.show-pill').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.show === escape(rawShow));
+            });
+
+            document.getElementById('casting-content').innerHTML = renderCastingForShow(rawShow);
+        }
+
+        // =====================
+        // Season
+        // =====================
+
+        function getWeekTypeColor(type) {
+            switch ((type || '').toLowerCase()) {
+                case 'rehearsal':   return '#81C784';
+                case 'tech':        return '#64B5F6';
+                case 'performance': return '#FFD54F';
+                case 'dark':        return '#BDBDBD';
+                case 'maintenance': return '#FFB74D';
+                default:            return '#E0C8DC';
+            }
+        }
+
+        function getWeekTypeBadgeClass(type) {
+            switch ((type || '').toLowerCase()) {
+                case 'rehearsal':   return 'week-badge-rehearsal';
+                case 'tech':        return 'week-badge-tech';
+                case 'performance': return 'week-badge-performance';
+                case 'dark':        return 'week-badge-dark';
+                case 'maintenance': return 'week-badge-maintenance';
+                default:            return 'week-badge-rehearsal';
+            }
+        }
+
+        function isCurrentWeek(startStr, endStr) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const start = new Date(startStr + 'T00:00:00');
+            const end = new Date(endStr + 'T23:59:59');
+            return today >= start && today <= end;
+        }
+
+        async function fetchSeason() {
+            const content = document.getElementById('season-content');
+            content.innerHTML = renderLoadingState();
+
+            try {
+                const resp = await apiFetch('/public/season');
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const data = await resp.json();
+
+                if (!data.weeks || data.weeks.length === 0) {
+                    content.innerHTML = `
+                        <div class="empty-state">
+                            <h3>No Season Data</h3>
+                            <p>Season schedule not yet available.</p>
+                        </div>`;
+                    return;
+                }
+
+                let html = '';
+                if (data.season) {
+                    html += `<div class="season-title">${escape(data.season)}</div>`;
+                }
+
+                data.weeks.forEach(week => {
+                    const isCurrent = week.start && week.end && isCurrentWeek(week.start, week.end);
+                    const typeColor = getWeekTypeColor(week.type);
+                    const typeBadgeClass = getWeekTypeBadgeClass(week.type);
+
+                    const dateRange = (week.start && week.end)
+                        ? `${formatShortDate(week.start)} \u2013 ${formatShortDate(week.end)}`
+                        : (week.start ? formatShortDate(week.start) : '');
+
+                    const thisWeekBadge = isCurrent
+                        ? `<span class="this-week-badge">This Week</span>`
+                        : '';
+
+                    const productionHtml = week.production
+                        ? `<div class="week-production">${escape(week.production)}</div>`
+                        : '';
+
+                    const notesHtml = week.notes
+                        ? `<div class="week-notes">${escape(week.notes)}</div>`
+                        : '';
+
+                    html += `
+                        <div class="week-block ${isCurrent ? 'current-week' : ''}">
+                            <div class="week-type-bar" style="background:${typeColor}"></div>
+                            <div class="week-body">
+                                <div class="week-header">
+                                    <span class="week-dates">${escape(dateRange)}</span>
+                                    <span class="week-type-badge ${typeBadgeClass}">${escape(week.type || 'Unknown')}</span>
+                                    ${thisWeekBadge}
+                                </div>
+                                ${productionHtml}
+                                ${notesHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                content.innerHTML = html;
+            } catch (err) {
+                content.innerHTML = renderErrorState('Failed to load season. Please try again.');
+                console.error('Season fetch error:', err);
+            }
+        }
+
+        // =====================
+        // Tab Switching
+        // =====================
+
+        function switchTab(tab) {
+            currentTab = tab;
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+
+            document.querySelectorAll('.tab-bar-item').forEach(el => el.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+            // Show/hide date nav in header
+            const dateNav = document.getElementById('date-nav');
+            dateNav.style.display = tab === 'daily' ? 'flex' : 'none';
+
+            if (tab === 'daily') fetchSchedule(currentDate);
+            if (tab === 'casting') fetchCasting();
+            if (tab === 'season') fetchSeason();
+            applyTranslations();
+        }
+
+        // =====================
+        // Display Settings
+        // =====================
+
+        const SETTINGS_KEY = 'nbt-schedule-settings';
+
+        function loadSettings() {
+            try {
+                return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
+            } catch { return {}; }
+        }
+
+        function saveSettings(settings) {
+            localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+        }
+
+        let lexendLoaded = false;
+        function loadLexendFont() {
+            if (lexendLoaded) return;
+            lexendLoaded = true;
+            const link = document.createElement('link');
+            link.href = 'https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap';
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+        }
+
+        function applySettings() {
+            const settings = loadSettings();
+            const body = document.body;
+
+            body.classList.toggle('mode-dark', !!settings.dark);
+            body.classList.toggle('mode-fancy', !!settings.fancy);
+            body.classList.toggle('mode-dyslexia', !!settings.dyslexia);
+            body.classList.toggle('mode-no-fittings', !!settings.noFittings);
+            body.classList.toggle('mode-spanish', !!settings.spanish);
+            body.classList.toggle('mode-portuguese', !!settings.portuguese);
+
+            if (settings.dyslexia) loadLexendFont();
+
+            // Update theme-color meta for dark mode
+            const meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.content = settings.dark ? '#1a1a2e' : '#FFF5F7';
+
+            // Sync checkboxes
+            document.getElementById('toggle-dark').checked = !!settings.dark;
+            document.getElementById('toggle-fancy').checked = !!settings.fancy;
+            document.getElementById('toggle-dyslexia').checked = !!settings.dyslexia;
+            document.getElementById('toggle-no-fittings').checked = !!settings.noFittings;
+            document.getElementById('toggle-spanish').checked = !!settings.spanish;
+            document.getElementById('toggle-portuguese').checked = !!settings.portuguese;
+        }
+
+        function onToggle(key, checkbox) {
+            const settings = loadSettings();
+            settings[key] = checkbox.checked;
+            saveSettings(settings);
+            applySettings();
+        }
+
+        document.getElementById('toggle-dark').addEventListener('change', function() { onToggle('dark', this); });
+        document.getElementById('toggle-fancy').addEventListener('change', function() { onToggle('fancy', this); });
+        document.getElementById('toggle-dyslexia').addEventListener('change', function() { onToggle('dyslexia', this); });
+        document.getElementById('toggle-no-fittings').addEventListener('change', function() { onToggle('noFittings', this); });
+
+        document.getElementById('toggle-spanish').addEventListener('change', function() {
+            if (this.checked) {
+                const settings = loadSettings();
+                settings.portuguese = false;
+                settings.spanish = true;
+                saveSettings(settings);
+                applySettings();
+                applyTranslations();
+            } else {
+                onToggle('spanish', this);
+                applyTranslations();
+            }
+        });
+
+        document.getElementById('toggle-portuguese').addEventListener('change', function() {
+            if (this.checked) {
+                const settings = loadSettings();
+                settings.spanish = false;
+                settings.portuguese = true;
+                saveSettings(settings);
+                applySettings();
+                applyTranslations();
+            } else {
+                onToggle('portuguese', this);
+                applyTranslations();
+            }
+        });
+
+        // Settings panel open/close
+        document.getElementById('settings-btn').addEventListener('click', () => {
+            document.getElementById('settings-panel').classList.add('open');
+            document.getElementById('settings-backdrop').classList.add('open');
+        });
+
+        function closeSettings() {
+            document.getElementById('settings-panel').classList.remove('open');
+            document.getElementById('settings-backdrop').classList.remove('open');
+        }
+
+        document.getElementById('settings-close').addEventListener('click', closeSettings);
+        document.getElementById('settings-backdrop').addEventListener('click', closeSettings);
+
+        // Touch sparkle trail for fancy mode
+        let sparkleTrailBound = false;
+        function setupSparkleTrail() {
+            if (sparkleTrailBound) return;
+            sparkleTrailBound = true;
+            let lastSparkle = 0;
+            document.addEventListener('touchmove', (e) => {
+                if (!document.body.classList.contains('mode-fancy')) return;
+                const now = Date.now();
+                if (now - lastSparkle < 50) return;
+                lastSparkle = now;
+                const touch = e.touches[0];
+                const s = document.createElement('div');
+                s.className = 'sparkle-trail';
+                s.style.left = (touch.clientX - 4) + 'px';
+                s.style.top = (touch.clientY - 4) + 'px';
+                document.body.appendChild(s);
+                s.addEventListener('animationend', () => s.remove());
+            }, { passive: true });
+        }
+        setupSparkleTrail();
+
+        // =====================
+        // Calendar Subscribe
+        // =====================
+
+        function handleGcalSubscribe(statusElId) {
+            const baseUrl = publicOrigin();
+            const icsUrl = baseUrl + '/public/calendar.ics';
+            const gcalUrl = 'https://calendar.google.com/calendar/render?cid=' + encodeURIComponent(icsUrl.replace('https://', 'http://'));
+            window.open(gcalUrl, '_blank');
+            showCalStatus(statusElId, 'Opening Google Calendar...');
+        }
+
+        function handleAppleSubscribe(statusElId) {
+            const apiOrigin = publicOrigin();
+            const webcalUrl = 'webcal://' + new URL(apiOrigin).host + '/public/calendar.ics';
+            window.location.href = webcalUrl;
+            showCalStatus(statusElId, 'Opening Calendar app...');
+        }
+
+        function showCalStatus(elId, msg) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            el.textContent = msg;
+            setTimeout(() => { el.textContent = ''; }, 3000);
+        }
+
+        // Footer buttons
+        document.getElementById('btn-gcal-footer').addEventListener('click', () => handleGcalSubscribe('cal-sub-status-footer'));
+        document.getElementById('btn-apple-footer').addEventListener('click', () => handleAppleSubscribe('cal-sub-status-footer'));
+
+        // =====================
+        // PWA Install Prompt
+        // =====================
+
+        let deferredPrompt = null;
+        const installBanner = document.getElementById('install-banner');
+        const installBtn = document.getElementById('install-btn');
+        const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+
+        // Hide if already installed as PWA or user dismissed
+        if (isStandalone || localStorage.getItem('nbt-install-dismissed')) {
+            installBanner.style.display = 'none';
+        }
+
+        // Android Chrome: capture install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        installBtn.addEventListener('click', async () => {
+            // Android: use native prompt if available
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                installBanner.style.display = 'none';
+                return;
+            }
+            // iOS / other: show instructions
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            if (isIOS) {
+                alert('Tap the Share button (box with arrow) at the bottom of Safari, then tap "Add to Home Screen"');
+            } else {
+                alert('Open the browser menu (\u22EE) and tap "Add to Home Screen" or "Install app"');
+            }
+        });
+
+        document.getElementById('install-close').addEventListener('click', () => {
+            installBanner.style.display = 'none';
+            localStorage.setItem('nbt-install-dismissed', '1');
+        });
+
+        // =====================
+        // Suggestions
+        // =====================
+
+        const suggestionsToggle = document.getElementById('suggestions-toggle');
+        const suggestionsForm = document.getElementById('suggestions-form');
+        const suggestionsInput = document.getElementById('suggestions-input');
+        const suggestionsCounter = document.getElementById('suggestions-counter');
+        const suggestionsSubmit = document.getElementById('suggestions-submit');
+        const suggestionsStatus = document.getElementById('suggestions-status');
+
+        suggestionsToggle.addEventListener('click', () => {
+            const open = suggestionsForm.style.display !== 'none';
+            suggestionsForm.style.display = open ? 'none' : 'block';
+            if (!open) suggestionsInput.focus();
+        });
+
+        suggestionsInput.addEventListener('input', () => {
+            const len = suggestionsInput.value.length;
+            suggestionsCounter.textContent = len + '/500';
+            suggestionsSubmit.disabled = len === 0;
+        });
+
+        suggestionsSubmit.disabled = true;
+
+        suggestionsSubmit.addEventListener('click', async () => {
+            const text = suggestionsInput.value.trim();
+            if (!text) return;
+            suggestionsSubmit.disabled = true;
+            suggestionsStatus.textContent = 'Sending...';
+            suggestionsStatus.style.color = 'var(--text-secondary)';
+            try {
+                const resp = await apiFetch('/public/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+                if (resp.ok) {
+                    suggestionsStatus.textContent = 'Thanks for your feedback!';
+                    suggestionsStatus.style.color = 'var(--accent)';
+                    suggestionsInput.value = '';
+                    suggestionsCounter.textContent = '0/500';
+                    setTimeout(() => {
+                        suggestionsForm.style.display = 'none';
+                        suggestionsStatus.textContent = '';
+                    }, 2000);
+                } else {
+                    throw new Error('Failed');
+                }
+            } catch {
+                suggestionsStatus.textContent = 'Could not send. Try again later.';
+                suggestionsStatus.style.color = '#c0392b';
+                suggestionsSubmit.disabled = false;
+            }
+        });
+
+        // =====================
+        // Translations
+        // =====================
+
+        /*
+         * Ballet Terminology — DO NOT TRANSLATE
+         * These terms are used internationally across all ballet companies:
+         *
+         * English        | Context
+         * -------------- | -------
+         * Casting        | Role assignments for a production
+         * Cast           | Group of dancers assigned to roles (e.g. "Cast A", "Cast B")
+         * Covers         | Understudies — dancers who learn roles as backup
+         * Fitting        | Costume fitting appointment
+         * Studio         | Rehearsal room (e.g. "Studio A", "Studio B")
+         * Staff          | Rehearsal directors, ballet masters, répétiteurs
+         * Corps          | Corps de ballet — the ensemble
+         * Principal      | Lead dancer rank
+         * Soloist        | Mid-rank dancer
+         * Apprentice     | Training-level company member
+         * Demi-soloist   | Between corps and soloist
+         * Répétiteur     | Coach who rehearses ballets
+         * Ballet Master  | Senior rehearsal/company manager
+         * Barre          | Warm-up exercises at the barre
+         * Pointe         | Dancing on the tips of toes in pointe shoes
+         * Pas de deux    | Dance for two
+         * Adagio         | Slow, sustained movements
+         * Allegro        | Fast, brisk movements
+         * Plié           | Bending of the knees
+         * Relevé         | Rising to the balls of the feet or pointe
+         * Tendu          | Stretching the foot along the floor
+         * Pirouette      | Spinning turn on one leg
+         * Arabesque      | Pose on one leg with other extended behind
+         */
+
+        const TRANSLATIONS = {
+            en: {
+                title: 'NBT Schedule',
+                daily: 'Daily',
+                casting: 'Casting',
+                season: 'Season',
+                month: 'Month',
+                today: 'Today',
+                studio: 'Studio',
+                cast: 'Cast',
+                notes: 'Notes',
+                fittings: 'Fitting',
+                covers: 'Covers',
+                comingSoon: 'Coming Soon',
+                comingSoonMsg: 'Month-at-a-glance view coming when monthly schedules are available.',
+                noEvents: 'No events scheduled',
+                addCalendar: 'Add schedule to your calendar',
+                addHomeScreen: 'Add to Home Screen',
+                install: 'Install',
+                haveSuggestion: 'Have a suggestion?',
+                send: 'Send',
+                suggestionPlaceholder: 'What would make this schedule better?',
+                submit: 'Submit',
+                displaySettings: 'Display Settings',
+                darkMode: 'Dark Mode',
+                fancyMode: 'Fancy Mode',
+                dyslexiaFriendly: 'Dyslexia-Friendly',
+                hideFittings: 'Hide Fittings',
+                revised: 'REVISED',
+                staff: 'Staff'
+            },
+            es: {
+                title: 'Horario NBT',
+                daily: 'Diario',
+                casting: 'Casting',
+                season: 'Temporada',
+                month: 'Mes',
+                today: 'Hoy',
+                studio: 'Studio',
+                cast: 'Cast',
+                notes: 'Notas',
+                fittings: 'Fitting',
+                covers: 'Covers',
+                comingSoon: 'Pr\u00f3ximamente',
+                comingSoonMsg: 'Vista mensual disponible cuando los horarios mensuales est\u00e9n listos.',
+                noEvents: 'No hay eventos programados',
+                addCalendar: 'Agregar horario a tu calendario',
+                addHomeScreen: 'Agregar a pantalla de inicio',
+                install: 'Instalar',
+                haveSuggestion: '\u00bfTienes una sugerencia?',
+                send: 'Enviar',
+                suggestionPlaceholder: '\u00bfQu\u00e9 mejorar\u00eda este horario?',
+                submit: 'Enviar',
+                displaySettings: 'Configuraci\u00f3n',
+                darkMode: 'Modo Oscuro',
+                fancyMode: 'Modo Elegante',
+                dyslexiaFriendly: 'Accesibilidad',
+                hideFittings: 'Ocultar Fittings',
+                revised: 'REVISADO',
+                staff: 'Staff'
+            },
+            pt: {
+                title: 'Agenda NBT',
+                daily: 'Di\u00e1rio',
+                casting: 'Casting',
+                season: 'Temporada',
+                month: 'M\u00eas',
+                today: 'Hoje',
+                studio: 'Studio',
+                cast: 'Cast',
+                notes: 'Notas',
+                fittings: 'Fitting',
+                covers: 'Covers',
+                comingSoon: 'Em Breve',
+                comingSoonMsg: 'Visualiza\u00e7\u00e3o mensal dispon\u00edvel quando os hor\u00e1rios mensais estiverem prontos.',
+                noEvents: 'Nenhum evento agendado',
+                addCalendar: 'Adicionar agenda ao seu calend\u00e1rio',
+                addHomeScreen: 'Adicionar \u00e0 tela inicial',
+                install: 'Instalar',
+                haveSuggestion: 'Tem uma sugest\u00e3o?',
+                send: 'Enviar',
+                suggestionPlaceholder: 'O que melhoraria esta agenda?',
+                submit: 'Enviar',
+                displaySettings: 'Configura\u00e7\u00f5es',
+                darkMode: 'Modo Escuro',
+                fancyMode: 'Modo Elegante',
+                dyslexiaFriendly: 'Acessibilidade',
+                hideFittings: 'Ocultar Fittings',
+                revised: 'REVISADO',
+                staff: 'Staff'
+            }
+        };
+
+        function getLang() {
+            const settings = loadSettings();
+            if (settings.spanish) return 'es';
+            if (settings.portuguese) return 'pt';
+            return 'en';
+        }
+
+        function t(key) {
+            const lang = getLang();
+            return TRANSLATIONS[lang][key] || TRANSLATIONS.en[key] || key;
+        }
+
+        function applyTranslations() {
+            const lang = getLang();
+            const tr = TRANSLATIONS[lang];
+
+            // Title
+            document.querySelector('.app-title').textContent = tr.title;
+
+            // Tab bar labels
+            document.querySelectorAll('.tab-bar-item').forEach(btn => {
+                const tab = btn.dataset.tab;
+                const labelMap = { daily: tr.daily, casting: tr.casting, season: tr.season, month: tr.month };
+                const nodes = btn.childNodes;
+                for (let i = nodes.length - 1; i >= 0; i--) {
+                    if (nodes[i].nodeType === 3 && nodes[i].textContent.trim()) {
+                        nodes[i].textContent = '\n                    ' + (labelMap[tab] || nodes[i].textContent.trim()) + '\n                ';
+                        break;
+                    }
+                }
+            });
+
+            // Today button
+            const todayBtn = document.getElementById('today-btn');
+            if (todayBtn) todayBtn.textContent = tr.today;
+
+            // Calendar subscribe text
+            const calText = document.querySelector('.cal-subscribe-text span');
+            if (calText) calText.textContent = tr.addCalendar;
+
+            // Install banner text
+            const installText = document.querySelector('.install-banner-text span');
+            if (installText) installText.textContent = tr.addHomeScreen;
+
+            // Install button
+            const installBtnEl = document.getElementById('install-btn');
+            if (installBtnEl) {
+                installBtnEl.childNodes.forEach(n => {
+                    if (n.nodeType === 3 && n.textContent.trim()) n.textContent = ' ' + tr.install;
+                });
+            }
+
+            // Suggestions text
+            const sugText = document.querySelector('.suggestions-text span');
+            if (sugText) sugText.textContent = tr.haveSuggestion;
+            const sugSendBtn = document.getElementById('suggestions-open');
+            if (sugSendBtn) {
+                sugSendBtn.childNodes.forEach(n => {
+                    if (n.nodeType === 3 && n.textContent.trim()) n.textContent = '\n                    ' + tr.send + '\n                ';
+                });
+            }
+            const sugInput = document.getElementById('suggestions-input');
+            if (sugInput) sugInput.placeholder = tr.suggestionPlaceholder;
+            const sugSubmitBtn = document.getElementById('suggestions-submit');
+            if (sugSubmitBtn) sugSubmitBtn.textContent = tr.submit;
+
+            // Settings panel
+            const settingsTitle = document.querySelector('.settings-title');
+            if (settingsTitle) settingsTitle.textContent = tr.displaySettings;
+
+            // Coming soon text
+            const csH2 = document.querySelector('.coming-soon h2');
+            if (csH2) csH2.textContent = tr.comingSoon;
+            const csP = document.querySelector('.coming-soon p');
+            if (csP) csP.textContent = tr.comingSoonMsg;
+        }
+
+        // =====================
+        // Init
+        // =====================
+
+        applySettings();
+        applyTranslations();
+        updateDateDisplay();
+        switchTab('daily');
+    </script>
+</body>
+</html>

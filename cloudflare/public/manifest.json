@@ -1,0 +1,16 @@
+{
+    "name": "NBT Schedule",
+    "short_name": "NBT",
+    "description": "Nevada Ballet Theatre rehearsal schedule",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#FFF5F9",
+    "theme_color": "#D4507A",
+    "icons": [
+        {
+            "src": "/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}
