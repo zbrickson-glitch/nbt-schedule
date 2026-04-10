@@ -52,7 +52,13 @@ CORPUS_DIR = Path(__file__).parent.parent / "tests" / "fixtures" / "corpus"
 MANIFEST_PATH = CORPUS_DIR / "manifest.json"
 
 GOG_ACCOUNT = "zbrickson@gmail.com"
-GOG_PASSWORD = "REDACTED"
+
+
+def _gog_password() -> str:
+    password = os.environ.get("GOG_KEYRING_PASSWORD", "").strip()
+    if not password:
+        raise RuntimeError("GOG_KEYRING_PASSWORD environment variable is required")
+    return password
 BROOKE_EMAIL = "bwahlquist@nevadaballet.org"
 
 # Filenames that are NOT daily schedule PDFs
@@ -60,7 +66,7 @@ _SKIP_KEYWORDS = ["casting", "roster", "maag", "month", "contract", "handbook"]
 
 
 def _ssh_gog(cmd: str, timeout: int = 60) -> str:
-    full = f"GOG_KEYRING_PASSWORD={GOG_PASSWORD} gog {cmd} --account {GOG_ACCOUNT} --json"
+    full = f"GOG_KEYRING_PASSWORD={_gog_password()} gog {cmd} --account {GOG_ACCOUNT} --json"
     result = subprocess.run(["ssh", "macmini", full], capture_output=True, text=True, timeout=timeout)
     if result.returncode != 0:
         raise RuntimeError(f"gog failed: {result.stderr.strip()}")

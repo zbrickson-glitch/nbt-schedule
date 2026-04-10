@@ -15,6 +15,7 @@ Usage:
 import argparse
 import base64
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -25,7 +26,13 @@ import requests
 PIPELINE_URL = "http://schedule.k3s.local/api/pipeline/nbt"
 BROOKE_EMAIL = "bwahlquist@nevadaballet.org"
 GOG_ACCOUNT = "zbrickson@gmail.com"
-GOG_PASSWORD = "REDACTED"
+
+
+def _gog_password() -> str:
+    password = os.environ.get("GOG_KEYRING_PASSWORD", "").strip()
+    if not password:
+        raise RuntimeError("GOG_KEYRING_PASSWORD environment variable is required")
+    return password
 
 
 # ---------------------------------------------------------------------------
@@ -33,7 +40,7 @@ GOG_PASSWORD = "REDACTED"
 # ---------------------------------------------------------------------------
 
 def _ssh_gog(cmd: str, timeout: int = 60) -> str:
-    full = f"GOG_KEYRING_PASSWORD={GOG_PASSWORD} gog {cmd} --account {GOG_ACCOUNT} --json"
+    full = f"GOG_KEYRING_PASSWORD={_gog_password()} gog {cmd} --account {GOG_ACCOUNT} --json"
     result = subprocess.run(["ssh", "macmini", full], capture_output=True, text=True, timeout=timeout)
     if result.returncode != 0:
         raise RuntimeError(f"gog command failed: {result.stderr.strip()}")

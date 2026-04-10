@@ -33,7 +33,13 @@ from app.parsers.classifier import classify_pdf, PdfType
 GOLDEN_DIR = PROJECT_ROOT / "tests" / "fixtures" / "golden"
 PDF_CACHE_DIR = PROJECT_ROOT / "tests" / "fixtures" / "pdfs"
 GOG_ACCOUNT = "zbrickson@gmail.com"
-GOG_PASSWORD = "REDACTED"
+
+
+def _gog_password() -> str:
+    password = os.environ.get("GOG_KEYRING_PASSWORD", "").strip()
+    if not password:
+        raise RuntimeError("GOG_KEYRING_PASSWORD environment variable is required")
+    return password
 
 
 # ---------------------------------------------------------------------------
@@ -42,7 +48,7 @@ GOG_PASSWORD = "REDACTED"
 
 def _ssh_gog(cmd: str, timeout: int = 60) -> str:
     """Run a gog command on Mac mini, return stdout. Raises on failure."""
-    full = f"GOG_KEYRING_PASSWORD={GOG_PASSWORD} gog {cmd} --account {GOG_ACCOUNT} --json"
+    full = f"GOG_KEYRING_PASSWORD={_gog_password()} gog {cmd} --account {GOG_ACCOUNT} --json"
     result = subprocess.run(["ssh", "macmini", full], capture_output=True, text=True, timeout=timeout)
     if result.returncode != 0:
         raise RuntimeError(f"gog command failed: {result.stderr.strip()}")
